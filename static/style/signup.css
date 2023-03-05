@@ -1,0 +1,44 @@
+form {
+    height: 100vh;
+}
+
+#form-wrapper {
+    overflow-x: hidden;
+    overflow-y: none;
+    height: 100vh;
+    width: 35%;
+}
+
+@media screen and (max-width: 1440px){
+    #form-wrapper {
+        width: 50%
+    }
+}
+
+@media screen and (max-width: 800px) {
+    #form-wrapper {
+        width: 100%;
+    }
+}
+
+#req-info {
+    right: 0%;
+    transition: right .3s ease-in;
+}
+
+#req-info.slide {
+    right: 100%;
+}
+
+#add-info {
+    left: 100%;
+    transition: left .3s ease-in;
+}
+
+#add-info.slide{
+    left: 0%;
+}
+
+button {
+    border: 2px solid black;
+}

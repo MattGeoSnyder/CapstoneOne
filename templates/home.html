@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="container-md">
+    <h3 class="text-center">Upcoming Workouts</h3>
+    <div class="container-fluid" id="upcoming-workouts">
+      {% for workout in upcoming %}
+
+      {% endfor %}
+    </div>
+  </div>
+  <div class="container-md">
+    <h3 class="text-center">Completed Workouts</h3>
+    <div id="completed-workouts" class="container-fluid h-25">
+      {% for workout in completed %}
+
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

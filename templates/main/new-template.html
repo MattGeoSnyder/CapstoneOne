@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="container-md w-50" id="input-wrapper">
+    <div class="container-fluid">
+      <input type="text" placeholder="Workout Name" class="form-control" name="template-name">
+      <hr>
+    </div>
+    <div id="selected-wrapper" class="container-fluid">
+      <form action="/templates/new" method="POST">
+      <h3>Selected Exercises</h3>
+        <div id="selected-exercises"></div>
+        <button class="btn">Create</button>
+      </form>
+    </div>
+    <div id="search-bar" class="container-fluid row">
+      {{form.hidden_tag()}}
+      {{form.muscle_groups.label}}{{form.muscle_groups(class='form-control col')}}
+      <button type="button" class="btn col-2">Search</button>
+    </div>
+    <div id="choices-wrapper" class="container-fluid">
+      <h3>Exercises</h3>
+      <div id="exercise-choices" class="container-fluid overflow-y-scroll">
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="/static/script/template.js"></script>
+{% endblock %}

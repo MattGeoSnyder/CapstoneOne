@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block style %}
+<link rel="stylesheet" href="/static/style/signup.css">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <h3 class="text-center">Sign Up</h3>
+  <form action="/signup" method="POST" class="d-flex justify-content-center">
+  <div id=form-wrapper class="position-relative">
+    <div id="req-info" class="container-fluid position-absolute">
+      {{form.hidden_tag()}}
+      {{form.username.label}} {{form.username(class='form-control')}}
+      {% for err in form.username.errors %}
+        {{form.username.error}}
+      {% endfor%}
+      {{form.password.label}} {{form.password(class='form-control')}}
+      {% for err in form.password.errors %}
+        {{form.password.error}}
+      {% endfor%}
+      {{form.confirm_password.label}} {{form.confirm_password(class='form-control')}}
+      {% for err in form.confirm_password.errors %}
+        {{form.confirm_password.error}}
+      {% endfor%}
+      <button id='next' class="btn position-absolute end-0" type="button">
+        Next
+      </button>
+    </div>
+    <div id="add-info" class="container-fluid position-absolute">
+      <h4 class="text-center">Tell us more about yourself</h4>
+      {{form.first_name.label}} {{form.first_name(class='form-control')}}
+      {{form.last_name.label}} {{form.last_name(class='form-control')}}
+      {{form.birthday.label}} {{form.birthday(class='form-control')}}
+      {{form.height.label}} {{form.height(class='form-control')}}
+      {{form.weight.label}} {{form.weight(class='form-control')}}
+      {{form.preferred_unit.label}} {{form.preferred_unit(class='form-control')}}
+      <div class="container-fluid d-flex justify-content-between">
+        <button id="back" class="btn" type="button">
+          Back
+        </button>
+        <button id="submit" class="btn">
+          Submit
+        </button>
+        <button class="btn">
+          Maybe later
+        </button>
+      </div>
+    </div>
+  </div>
+  </form>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+<script src="/static/script/signup.js"></script>
+{% endblock %}

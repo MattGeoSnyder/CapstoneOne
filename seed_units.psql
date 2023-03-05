@@ -1,0 +1,14 @@
+DROP TABLE IF EXISTS units;
+
+\c CapstoneOne
+
+CREATE TABLE units(
+    id SERIAL PRIMARY KEY,
+    abbr TEXT NOT NULL
+);
+
+INSERT INTO units
+    (abbr)
+VALUES
+    ('lb'),
+    ('kg');
