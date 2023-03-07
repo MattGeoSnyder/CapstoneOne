@@ -3,9 +3,10 @@ from flask_debugtoolbar import DebugToolbarExtension
 from secret_keys import app_secret_key
 from models import db, connect_db, User, Template, TemplateExercise, Workout, WorkoutExercise, Set
 from sqlalchemy.exc import IntegrityError
-from forms import SignupForm, LoginForm, ExerciseSearchForm
+from forms import SignupForm, LoginForm, TemplateForm
 from datetime import date, datetime
 import requests
+import json
 import pdb
 
 USER_KEY = 'curr_user'
@@ -107,15 +108,74 @@ def home():
     return render_template('home.html')
 
 
-@app.route('/templates/new', methods=['GET', 'POST'])
-def create_template():
-    form = ExerciseSearchForm()
+@app.route('/templates', methods=['GET', 'POST'])
+def templates():
+    templates = Template.query.filter(Template.user_id == g.user.id).all()
+
+    return render_template('/template/templates.html', templates=templates)
+
+
+@app.route('/templates/<int:temp_id>', methods=['GET', 'POST'])
+def edit_template(temp_id):
+    form = TemplateForm()
     results = requests.get(f'{WGER}/muscle').json()
     muscle_groups = [(res['id'], res['name_en'] if res['name_en']
                       else res['name']) for res in results['results']]
     form.muscle_groups.choices = muscle_groups
-    pdb.set_trace()
+    template = Template.query.get_or_404(temp_id)
+    # pdb.set_trace()
     if form.validate_on_submit():
-        template = Template(name=form.workout-name.data)
+        for ex in template.exercises:
+            db.session.delete(ex)
+        template_name = request.form.get('name')
+        exercises = request.form.getlist('exercise')
 
-    return render_template('/main/new-template.html', form=form)
+        template.name = template_name
+        for ex in exercises:
+            data = json.loads(ex)
+            temp_ex = TemplateExercise(exercise_id=data['id'],
+                                       exercise_name=data['name'])
+            template.exercises.append(temp_ex)
+        db.session.commit()
+        return redirect('/templates')
+    return render_template('/template/edit-template.html',
+                           form=form,
+                           template=template)
+
+
+@app.route('/templates/new', methods=['GET', 'POST'])
+def create_template():
+    form = TemplateForm()
+    results = requests.get(f'{WGER}/muscle').json()
+    muscle_groups = [(res['id'], res['name_en'] if res['name_en']
+                      else res['name']) for res in results['results']]
+    form.muscle_groups.choices = muscle_groups
+    if form.validate_on_submit():
+        # get values from request.form since some inputs are generated
+        # dynamically in HTML
+
+        # Need to check that there are indeed exercises selected. Maybe even a
+        # front end validation by initially disabling create button.
+
+        template_name = request.form.get('name')
+        exercises = request.form.getlist('exercise')
+        template = Template(name=template_name, user_id=g.user.id)
+        db.session.add(template)
+        db.session.commit()
+        for ex in exercises:
+            data = json.loads(ex)
+            ex = TemplateExercise(template_id=template.id,
+                                  exercise_id=data['id'], exercise_name=data['name'])
+            db.session.add(ex)
+        db.session.commit()
+        return redirect('/templates')
+
+    return render_template('/template/new-template.html', form=form)
+
+
+@app.route('/templates/<int:temp_id>/delete')
+def delete_template(temp_id):
+    template = Template.query.get_or_404(temp_id)
+    db.session.delete(template)
+    db.session.commit()
+    return redirect('/templates')

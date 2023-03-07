@@ -1,0 +1,128 @@
+body {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+}
+
+#content-container {
+    height: 90%;
+    margin-top: 2rem;
+}
+
+@media screen and (max-height: 700px) {
+    #content-container {
+        margin-top: 0.5rem;
+        height: 85%;
+    }
+}
+
+#input-wrapper {
+    width: 35%;
+    height: 100%;
+
+    padding: 20px 15px;
+    margin: 0 auto;
+    border: 2px solid gray;
+    border-radius: 10px;
+
+    position: relative;
+}
+
+@media screen and (max-width: 1024px) {
+    #input-wrapper {
+        width: 50%;
+    }
+}
+
+@media screen and (max-width: 850px) {
+    #input-wrapper {
+        width: 75%;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    #input-wrapper {
+        width: 100%;
+    }
+}
+
+form {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: repeat(12, 1fr);
+}
+
+#name-container {
+    grid-row: 1/2;
+}
+
+#selected-wrapper {
+    border: 2px solid gray;
+    border-radius: 10px;
+    grid-row: 2/6;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(5,1fr);
+}
+
+#search-bar {
+    grid-row: 6/7;
+    margin: 10px auto;
+    justify-content: space-between;
+}
+
+#search-bar div.col4 {
+    padding-left: 0px;
+}
+
+#search-bar button {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+
+    border: 1px solid black;
+}
+
+#selected-wrapper h3 {
+    grid-row: 1/2;
+}
+
+#selected-exercises {
+    grid-row: 2/6;
+    overflow-y: scroll;
+    padding-bottom: 10px
+}
+
+#choices-wrapper {
+    border: 2px solid gray;
+    border-radius: 10px;
+
+    overflow-y: hidden;
+    grid-row: 7/12;
+
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(6, 1fr);
+}
+
+#choices-wrapper h3 {
+    grid-row: 1/2;
+}
+
+#exercise-choices {
+    grid-row: 2/7;
+    padding-bottom: 10px;
+    overflow-y: scroll;
+}
+
+#submit-btn {
+    display: block;
+    margin: 0 auto;
+
+    grid-row: 12/13;
+    place-self: center;
+
+    border: 1px solid black;
+}

@@ -53,4 +53,5 @@ class LoginForm(FlaskForm):
 
 
 class TemplateForm(FlaskForm):
-    muscle_groups = SelectField("Muscle Group")
+    name = StringField("Name", validators=[InputRequired()])
+    muscle_groups = SelectField("Muscle Group", validators=[Optional()])

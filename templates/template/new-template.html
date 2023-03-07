@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block style %}
+<link rel="stylesheet" href="/static/style/template/new-template.css">
+<link rel="stylesheet" href="/static/style/card.css">
+{% endblock %}
+
+{% block content %}
+<div id="content-container" class="container-fluid">
+  <div id="input-wrapper">
+    <form action="/templates/new" method="POST">
+      <div id="name-container">
+        {{form.name(placeholder='Workout Name', class='form-control', value=template_name)}}
+      </div>
+      <div id="selected-wrapper" class="container-fluid">
+          <h3 class="text-center">Selected Exercises</h3>
+          {{form.hidden_tag()}}
+          <div id="selected-exercises">
+            {% for exercise in exercises %}
+              <div data-id={{exercise.id}} class="my-card">
+                {{exercise.exercise_name}}
+                <span><i class="fa-solid fa-minus fa-2xl"></i></span>
+              </div>
+            {% endfor %}
+          </div>
+      </div>
+      <div id="search-bar" class="container-fluid row">
+        <div class="col">
+          {{form.muscle_groups.label}}{{form.muscle_groups(class='form-control col-4')}}
+        </div>
+        <div class="col-4 position-relative">
+          <button type="button" class="btn">Search</button>
+        </div>
+      </div>
+      <div id="choices-wrapper" class="container-fluid">
+        <h3 class="text-center">Exercises</h3>
+        <div id="exercise-choices">
+          
+        </div>
+      </div>
+      <button id="submit-btn" class="btn">Create</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="/static/script/new-template.js"></script>
+{% endblock %}

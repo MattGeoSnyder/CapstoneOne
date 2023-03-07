@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="container w-50 h-50 mt-3">
+    <div class="container-fluid position-relative" style="height: 30px">
+      <a href="/templates/new">
+        <i class="fa-solid fa-plus position-absolute end-0">Add Template</i>
+      </a>
+    </div>
+    {% if templates %}
+      {% for template in templates %}
+        <div class="container-fluid card">
+          <a href="/templates/{{template.id}}">{{template.name}}</a>
+          <form action="/templates/{{template.id}}/delete">
+            <button class="btn">Delete</button>
+          </form>
+        </div>
+      {% endfor %}
+    {% else %}
+      <h4 class="text-center">No templates to display</h4>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

@@ -58,7 +58,10 @@ class Template(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(20), nullable=False)
-    user = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+    exercises = db.relationship(
+        'TemplateExercise', backref='template', cascade='all, delete')
 
 
 class TemplateExercise(db.Model):
@@ -68,6 +71,7 @@ class TemplateExercise(db.Model):
     template_id = db.Column(db.Integer, db.ForeignKey(
         'templates.id'), nullable=False)
     exercise_id = db.Column(db.Integer, nullable=False)
+    exercise_name = db.Column(db.String, nullable=False)
 
 
 class Workout(db.Model):

@@ -16,7 +16,12 @@ function createExerciseCard(id, name) {
     card = document.createElement('div');
     card.innerText = name;
     card.setAttribute('data-id', id);
+    card.classList.add('my-card');
     
+    icon = document.createElement('span');
+    icon.innerHTML = '<i class="fa-solid fa-plus fa-2xl"></i>';
+    
+    card.appendChild(icon);
     exChoices.appendChild(card);
 
     return card;
@@ -30,9 +35,18 @@ function selectCard(card) {
     selectedExs.appendChild(oldCard);
     input = document.createElement('input');
     input.type = 'hidden';
-    input.value = card.dataset.id;
+    input_val = {
+        id: card.dataset.id,
+        name: card.innerText
+    }
+    input.value = JSON.stringify(input_val);
     input.name = 'exercise'
 
+    icon = oldCard.querySelector('span');
+    icon.innerHTML ='<i class="fa-solid fa-minus fa-2xl"></i>';
+
+    oldCard.appendChild(icon);
+    oldCard.appendChild(input);
     oldCard.removeEventListener('click', cardHandler);
 }
 
