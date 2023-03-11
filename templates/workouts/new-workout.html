@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block style %}
+  <link rel="stylesheet" href="/static/style/workout/new-workout.css">
+  <link rel="stylesheet" href="/static/style/card.css">
+{% endblock %}
+
+{% block content %}
+  <div id="content-container">
+    <div id="input-container">
+      <form action="/workouts/new">
+        <div id="date-input">
+          {{form.scheduled.label}} {{form.scheduled(class='form-control')}}
+        </div>
+        <div id="search-bar">
+          {{exercise_form.muscle_groups.label}} {{exercise_form.muscle_groups(class='form-control')}}
+          <button id="search-btn" type="button" class="btn">Search</button>  
+        </div>
+        <div id="exercise-wrapper">
+          
+        </div>
+
+        <div id="btn-bar">
+          <button type="button" class="btn">Back</button>
+          <button type="button" class="btn">Next Exercise</button>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}
+
+{% block script %}
+<script src="/static/script/new-workout.js"></script>
+{% endblock %}

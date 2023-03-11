@@ -55,3 +55,7 @@ class LoginForm(FlaskForm):
 class TemplateForm(FlaskForm):
     name = StringField("Name", validators=[InputRequired()])
     muscle_groups = SelectField("Muscle Group", validators=[Optional()])
+
+
+class WorkoutForm(FlaskForm):
+    scheduled = DateField("Schedule For", validators=[InputRequired()])

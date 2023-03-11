@@ -3,7 +3,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from secret_keys import app_secret_key
 from models import db, connect_db, User, Template, TemplateExercise, Workout, WorkoutExercise, Set
 from sqlalchemy.exc import IntegrityError
-from forms import SignupForm, LoginForm, TemplateForm
+from forms import SignupForm, LoginForm, TemplateForm, WorkoutForm
 from datetime import date, datetime
 import requests
 import json
@@ -99,7 +99,7 @@ def logout():
 
 
 ########################################################################################
-# Main app routes
+# Routes for templates
 
 @app.route('/')
 def home():
@@ -179,3 +179,19 @@ def delete_template(temp_id):
     db.session.delete(template)
     db.session.commit()
     return redirect('/templates')
+
+############################################################################
+# Routes for workouts
+
+
+@app.route('/workouts/new')
+def create_from_blank():
+    form = WorkoutForm()
+    exercise_form = TemplateForm()
+    results = requests.get(f'{WGER}/muscle').json()
+    muscle_groups = [(res['id'], res['name_en'] if res['name_en']
+                      else res['name']) for res in results['results']]
+    exercise_form.muscle_groups.choices = muscle_groups
+    if form.validate_on_submit():
+        return redirect('/')
+    return render_template('/workouts/new-workout.html', form=form, exercise_form=exercise_form)
