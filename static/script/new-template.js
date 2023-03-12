@@ -9,17 +9,23 @@ async function getExercises() {
     return res.data.results;
 }
 
-function createExerciseCard(id, name) {
+function createExerciseCard(id, name, index) {
     let exChoices = document.querySelector('#exercise-choices');
-
+    let select = document.querySelector('#search-bar select');
+    let optionIndex = select.selectedIndex
+    let muscleGroup = select.options[optionIndex].innerText;
     
     card = document.createElement('div');
     card.innerText = name;
-    card.setAttribute('data-id', id);
+    card.dataset.id = id;
+    card.dataset.muscle = muscleGroup;
+    card.dataset.index = index;
     card.classList.add('my-card');
     
     icon = document.createElement('span');
     icon.innerHTML = '<i class="fa-solid fa-plus fa-2xl"></i>';
+    icon.addEventListener('click', cardHandler);
+
     
     card.appendChild(icon);
     exChoices.appendChild(card);
@@ -37,7 +43,8 @@ function selectCard(card) {
     input.type = 'hidden';
     input_val = {
         id: card.dataset.id,
-        name: card.innerText
+        name: card.innerText,
+        muscle: card.dataset.muscle
     }
     input.value = JSON.stringify(input_val);
     input.name = 'exercise'
@@ -45,13 +52,36 @@ function selectCard(card) {
     icon = oldCard.querySelector('span');
     icon.innerHTML ='<i class="fa-solid fa-minus fa-2xl"></i>';
 
+    oldCard.setAttribute('selected', true);
     oldCard.appendChild(icon);
     oldCard.appendChild(input);
-    oldCard.removeEventListener('click', cardHandler);
+}
+
+function unSelectCard(card) {
+    let exChoices = document.querySelector('#exercise-choices');
+    let selectedExs = document.querySelector('#selected-exercises');
+
+    oldCard = selectedExs.removeChild(card);
+    let input = oldCard.querySelector('input');
+    let icon = oldCard.querySelector('span');
+
+    oldCard.removeChild(input);
+    icon.innerHTML = '<i class="fa-solid fa-plus fa-2xl"></i>';
+    oldCard.setAttribute('selected', "");
+
+    if (exChoices.children[0].dataset.muscle === oldCard.dataset.muscle){
+        exChoices.insertBefore(oldCard,exChoices.children[oldCard.dataset.index]);
+    }
 }
 
 function cardHandler(event) {
-    selectCard(event.target);
+    let card = event.target.parentElement.parentElement;
+
+    if(card.getAttribute('selected')) {
+        unSelectCard(card)
+    } else {
+        selectCard(card);
+    }
 }
 
 searchBtn.addEventListener('click', async (e) => {
@@ -59,9 +89,8 @@ searchBtn.addEventListener('click', async (e) => {
     exChoices.innerHTML = '';
 
     let exercises = await getExercises();
-    exercises.forEach(exercise => {
-        let card = createExerciseCard(exercise.id, exercise.name);
-        card.addEventListener('click', cardHandler);
+    exercises.forEach((exercise, index) => {
+        createExerciseCard(exercise.id, exercise.name, index);
     });
 });
 

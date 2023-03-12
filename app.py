@@ -34,7 +34,7 @@ def add_user_to_g():
         g.user = None
 
 ##############################################################################################
-# Signup/login routes
+# Signup/login/home routes
 
 
 def do_login(user):
@@ -66,7 +66,7 @@ def signup():
             do_login(user)
             return redirect('/')
         except IntegrityError as e:
-            # pdb.set_trace()
+            pdb.set_trace()
             flash('Username already exists', 'err')
             return render_template('/signup.html', form=form)
     return render_template('signup.html', form=form)
@@ -98,14 +98,20 @@ def logout():
     return redirect('/login')
 
 
-########################################################################################
-# Routes for templates
-
 @app.route('/')
 def home():
     if not g.user:
         return redirect('/login')
-    return render_template('home.html')
+    upcoming = Workout.query.filter(Workout.user_id == g.user.id).filter(
+        Workout.completed == None).order_by(Workout.scheduled).all()
+    completed = Workout.query.filter(Workout.user_id == g.user.id).filter(Workout.completed != None).order_by(
+        Workout.completed.desc()).limit(10).all()
+    # pdb.set_trace()
+    return render_template('home.html', upcoming=upcoming, completed=completed)
+
+
+########################################################################################
+# Routes for templates
 
 
 @app.route('/templates', methods=['GET', 'POST'])
@@ -156,7 +162,6 @@ def create_template():
 
         # Need to check that there are indeed exercises selected. Maybe even a
         # front end validation by initially disabling create button.
-
         template_name = request.form.get('name')
         exercises = request.form.getlist('exercise')
         template = Template(name=template_name, user_id=g.user.id)
@@ -165,7 +170,9 @@ def create_template():
         for ex in exercises:
             data = json.loads(ex)
             ex = TemplateExercise(template_id=template.id,
-                                  exercise_id=data['id'], exercise_name=data['name'])
+                                  exercise_id=data['id'],
+                                  exercise_name=data['name'],
+                                  muscle_group=data['muscle'])
             db.session.add(ex)
         db.session.commit()
         return redirect('/templates')
@@ -184,8 +191,8 @@ def delete_template(temp_id):
 # Routes for workouts
 
 
-@app.route('/workouts/new')
-def create_from_blank():
+@app.route('/workouts/new', methods=['GET', 'POST'])
+def create_workout():
     form = WorkoutForm()
     exercise_form = TemplateForm()
     results = requests.get(f'{WGER}/muscle').json()
@@ -193,5 +200,47 @@ def create_from_blank():
                       else res['name']) for res in results['results']]
     exercise_form.muscle_groups.choices = muscle_groups
     if form.validate_on_submit():
+        # pdb.set_trace()
+        workout = Workout(user_id=g.user.id,
+                          scheduled=form.scheduled.data)
+        db.session.add(workout)
+        exercises = request.form.getlist('ex-info')
+        for exercise in exercises:
+            data = json.loads(exercise)
+            if data['sets']:
+                ex = WorkoutExercise(exercise_id=data['exId'],
+                                     exercise_name=data['name'],
+                                     muscle_group=data['muscle'])
+                db.session.add(workout)
+                workout.exercises.append(ex)
+                for set in data['sets']:
+                    s = Set(exercise_id=data['exId'],
+                            target_weight=set['tw'],
+                            target_reps=set['tr'],
+                            target_RPE=set['trpe'],
+                            resttime=set['rt'])
+                    db.session.add(s)
+                    ex.sets.append(s)
+        db.session.commit()
         return redirect('/')
+
     return render_template('/workouts/new-workout.html', form=form, exercise_form=exercise_form)
+
+
+@app.route('/workouts/new/templates')
+def return_templates():
+    return redirect('/templates')
+
+
+@app.route('/workouts/new/templates/<int:temp_id>', methods=['GET', 'POST'])
+def create_from_template(temp_id):
+    template = Template.query.get_or_404(temp_id)
+    form = WorkoutForm()
+    if form.validate_on_submit():
+        return redirect('/')
+    return render_template('/workouts/template-workout.html', form=form, template=template)
+
+
+@app.route('/workouts/<int:workout_id>', methods=['GET', 'POST'])
+def start_workout():
+    return render_template('start-workout.html')

@@ -6,7 +6,12 @@
     <h3 class="text-center">Upcoming Workouts</h3>
     <div class="container-fluid" id="upcoming-workouts">
       {% for workout in upcoming %}
-
+        <div>
+          {{workout.scheduled}}
+          {% for exercise in workout.exercises %}
+            {{exercise.exercise_name}}
+          {% endfor %}
+        </div>
       {% endfor %}
     </div>
   </div>

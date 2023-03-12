@@ -72,6 +72,7 @@ class TemplateExercise(db.Model):
         'templates.id'), nullable=False)
     exercise_id = db.Column(db.Integer, nullable=False)
     exercise_name = db.Column(db.String, nullable=False)
+    muscle_group = db.Column(db.String, nullable=False)
 
 
 class Workout(db.Model):
@@ -91,6 +92,8 @@ class WorkoutExercise(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     workout_id = db.Column(db.Integer, db.ForeignKey('workouts.id'))
     exercise_id = db.Column(db.Integer, nullable=False)
+    muscle_group = db.Column(db.String, nullable=False)
+    exercise_name = db.Column(db.String, nullable=False)
 
     sets = db.relationship('Set', backref='exercise')
 
@@ -101,13 +104,13 @@ class Set(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     workout_exercises = db.Column(db.Integer,
                                   db.ForeignKey('work_exercises.id'))
-    exercise_id = db.Column(db.Integer, nullable=False)
+    exercise_id = db.Column(db.Integer, nullable=True)
     target_weight = db.Column(db.Integer, nullable=True)
-    completed_weight = db.Column(db.Integer, nullable=False)
+    completed_weight = db.Column(db.Integer, nullable=True)
     target_reps = db.Column(db.Integer, nullable=True)
-    complete_reps = db.Column(db.Integer, nullable=False)
+    completed_reps = db.Column(db.Integer, nullable=True)
     target_RPE = db.Column(db.Float, nullable=True)
-    completed_RPE = db.Column(db.Float, nullable=False)
+    completed_RPE = db.Column(db.Float, nullable=True)
     resttime = db.Column(db.Integer, nullable=True)
 
 

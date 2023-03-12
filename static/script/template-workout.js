@@ -1,53 +1,42 @@
 const WGER = 'https://wger.de/api/v2';
 
-let curr = document.querySelector('#curr');
-let head = curr;
-let tail = curr;
+let curr;
+let head;
+let tail;
 
 function setSlidePosition() {    
-    curr.style.left = '0%';
+    let slides = document.querySelectorAll('.slide');
+    head = slides[0];
+    offset = 0;
+    for (let i = 0; i < slides.length; i++) {
+        slides[i].style.left = `${offset}%`;
+        offset += 100;
+        if (i === 0){
+            slides[i].id = 'curr';
+            curr = slides[i];
+        }
+        else if (i === slides.length - 1) {
+            slides[i].id = 'tail';
+            tail = slides[i];
+        }
+    }
 }
 
 function disableButtons() {
-    let setBtn = document.querySelector('#add-set-btn');
-    let nextBtn = document.querySelector('#next-btn');
-
-    setBtn.disabled = true;
-    nextBtn.disabled = true;
-}
-
-function enableButtons() {
-    let setBtn = document.querySelector('#add-set-btn');
-    let nextBtn = document.querySelector('#next-btn');
-
-    setBtn.disabled = false;
-    nextBtn.disabled = false;
+    let submit = document.querySelector('#submission-bar button');
+    submit.disabled = true;
 }
 
 window.addEventListener('DOMContentLoaded', function() {
     setSlidePosition();
     disableButtons();
-})
-
-async function getExercises() {
-    let muscleGroup = document.querySelector('#search-bar select[name="muscle_groups"]');
-    let val = parseInt(muscleGroup.value);
-    let res = await axios.get(`${WGER}/exercise?muscles=${val}&language=2&limit=50`);
-    return res.data.results;
-}
+});
 
 function createExForm(exName) {
     curr.innerHTML = '';
 
     let h3 = document.createElement('h3');
     h3.innerText = exName;
-
-    let deleteIcon = document.createElement('span');
-    deleteIcon.innerHTML = '<i class="fa-solid fa-x"></i>';
-    deleteIcon.addEventListener('click', function(){
-        curr.innerHTML = '';
-    });
-    h3.appendChild(deleteIcon);
 
     let exInfo = document.createElement('input');
     exInfo.type = 'hidden';
@@ -66,7 +55,6 @@ function createSetForm() {
     let h4 = document.createElement('h4');
     h4.innerText = `Set ${setCount + 1}`;
     setWrapper.appendChild(h4);
-
     let deleteIcon = document.createElement('span');
     deleteIcon.innerHTML = '<i class="fa-solid fa-x"></i>';
     deleteIcon.addEventListener('click', function(e) {
@@ -75,6 +63,7 @@ function createSetForm() {
         curr.removeChild(setForm);
     });
     h4.appendChild(deleteIcon);
+
 
     let tw_label = document.createElement('label');
     let tw_input = document.createElement('input')
@@ -125,20 +114,10 @@ function createSetForm() {
     curr.appendChild(setWrapper);
 }
 
-function setExInfo(card) {
-    let exInfo = document.querySelector('#curr input[name="ex-info"]');
-    let select = document.querySelector('#search-bar select');
-    let index = select.selectedIndex;
-    let muscleGroup = select.options[index].innerText;
-    exInfo.dataset.id = card.dataset.id;
-    exInfo.dataset.name = card.innerText;
-    exInfo.dataset.muscle = muscleGroup;
-}
 
 function selectExercise(card) {
     createExForm(card.innerText);
     createSetForm();
-    enableButtons();
     setExInfo(card);
 }
 
@@ -162,48 +141,28 @@ function createExerciseCard(id, name) {
     return card;
 }
 
-
-let searchBtn = document.querySelector('#search-btn')
-searchBtn.addEventListener('click', async function() {
-    let exercises = await getExercises();
-
-    exercises.forEach(exercise => {
-        createExerciseCard(exercise.id, exercise.name);
-    });
-});
-
 let addSetBtn = document.querySelector('#add-set-btn');
 addSetBtn.addEventListener('click', function() {
     createSetForm();
+    enableButtons();
 })
 
 let nextBtn = document.querySelector('#next-btn');
 nextBtn.addEventListener('click', function() {
-    let exWrapper = document.querySelector('#exercise-wrapper');
-    curr.id = '';
+    if (curr !== tail){
+        let exWrapper = document.querySelector('#exercise-wrapper');
+        curr.id = '';
 
-    let exInfo = curr.querySelector('input[name="ex-info"]');
-    if (!exInfo){
-        return;
-    }
-
-    if (curr === tail) {
-        let newTail = document.createElement('div');
-        newTail.classList.add('slide');
-        newTail.style.left = '100%';
-        tail = newTail;
-        exWrapper.appendChild(newTail);    
-    }
-
-    slides = document.querySelectorAll('.slide');
-    for (let slide of slides) {
-        let percent = slide.style.left;
-        let p = parseInt(percent.replace('%', '')) - 100;
-        if (p === 0) {
-            slide.id = 'curr';
-            curr = slide;
+        slides = document.querySelectorAll('.slide');
+        for (let slide of slides) {
+            let percent = slide.style.left;
+            let p = parseInt(percent.replace('%', '')) - 100;
+            if (p === 0) {
+                slide.id = 'curr';
+                curr = slide;
+            }
+            slide.style.left = `${p}%`;
         }
-        slide.style.left = `${p}%`;
     }
 });
 
@@ -229,12 +188,12 @@ function setValues() {
     let slides = document.querySelectorAll('.slide');
     for (let slide of slides) {
         let input = slide.querySelector('input[name="ex-info"]');
-        console.log(input);
         let sets = slide.querySelectorAll('.setForm');
         let exValues = {exId: input.dataset.id,
-                        name: input.dataset.name,
-                        muscle: input.dataset.muscle,
-                        sets: []};
+            name: input.dataset.name,
+            muscle: input.dataset.muscle,
+            sets: []};
+        console.log(exValues);
         for (let set of sets) {
             setInputs = set.querySelectorAll('input');
             if (setInputs.length > 0) {
@@ -249,6 +208,18 @@ function setValues() {
         }
         input.value =  JSON.stringify(exValues);       
     }
+}
+
+function enableButtons() {
+    let slides = document.querySelectorAll('.slide');
+    let submit = document.querySelector('#submission-bar button');
+    for (let slide of slides) {
+        let setForm = slide.querySelector('.setForm');
+        if (!setForm){
+            return;
+        }
+    }
+    submit.disabled = false;
 }
 
 let form = document.querySelector('#submit');
