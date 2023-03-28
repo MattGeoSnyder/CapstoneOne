@@ -79,6 +79,7 @@ class Workout(db.Model):
     __tablename__ = 'workouts'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     scheduled = db.Column(db.Date, nullable=True)
     completed = db.Column(db.Date, nullable=True)

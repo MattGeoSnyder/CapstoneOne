@@ -10,7 +10,8 @@
     <div id="input-container">
       <form id="submit" action="/workouts/new" method="POST">
         <div id="workout-name-wrapper">
-          <input id="workout-name" name="workout-name" type="text" placeholder="Workout Name">
+          {{exercise_form.name(id="name", placeholder="Workout Name", class="form-control")}}
+          <!-- <input id="workout-name" name="workout-name" type="text" placeholder="Workout Name"> -->
         </div>
         <div id="date-input">
           {{form.hidden_tag()}}

@@ -34,6 +34,12 @@ body {
     background-color: var(--my-red) !important;
 }
 
+.navbar-brand i {
+    color: var(--my-white);
+    margin-right: 5px;
+    transform: rotate(-45deg);
+}
+
 .navbar a {
     color: var(--my-white);
 }

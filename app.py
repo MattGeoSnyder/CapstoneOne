@@ -202,7 +202,7 @@ def create_workout():
     if form.validate_on_submit():
         # pdb.set_trace()
         workout = Workout(user_id=g.user.id,
-                          scheduled=form.scheduled.data)
+                          scheduled=form.scheduled.data, name=exercise_form.name.data)
         db.session.add(workout)
         exercises = request.form.getlist('ex-info')
         for exercise in exercises:

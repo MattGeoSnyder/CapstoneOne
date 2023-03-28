@@ -81,12 +81,13 @@
 }
 
 #upcoming-workouts {
-    height: 40%;
-    text-align: center;
+    min-height: 40%;
+    height: fit-content;
 }
 
 #completed-wrapper {
     min-height: 40%;
+    height: fit-content;
 }
 
 #completed-workouts {
@@ -109,6 +110,27 @@
 
     background-color: var(--my-white);
     color: var(--my-black);
+}
+
+.workout-header {
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+
+.workout-header span {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+.workout-header h3 a {
+    color: var(--my-red);
+    text-decoration: none;
+}
+
+.workout-header h3 a:hover {
+    color: var(--my-black)
 }
 
 i {
