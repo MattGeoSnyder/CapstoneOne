@@ -1,0 +1,43 @@
+{% macro create_set(index, set, exercise_name, length) %}
+  <div class="set-form" 
+  {% if index > 0 %} style="height: 0px; display: none;" 
+  {% endif %}>
+    <h4>Set {{index + 1}} / {{length}} </h4>
+      <div class="tw">
+        <label for="tw-{{index}}" class="">Target Weight</label>
+        <input type="number" class="form-control" name="tw" id="tw-{{index}}" value={{set.target_weight}} placeholder="Target Weight">  
+      </div>
+      <div class="cw">
+        <label for="cw-{{index}}">Completed Weight</label>
+        <input type="number" class="form-control" name="cw" id="cw-{{index}}">  
+      </div>
+      <div class="tr">
+        <label for="tr-{{index}}">Target Reps</label>
+        <input type="number" class="form-control tr" name="tr" id="tr-{{index}}" value={{set.target_reps}}>  
+      </div>
+      <div class="cr">
+        <label for="cr-{{index}}">Completed Reps</label>
+        <input type="number" class="form-control cr" name="cr" id="cr-{{index}}">  
+      </div>
+      <div class="trpe">
+        <label for="trpe-{{index}}">Target RPE</label>
+        <input type="number" step="0.5" class="form-control trpe" name="trpe" id="trpe-{{index}}" value={{set.target_RPE}}>  
+      </div>
+      <div class="crpe">
+        <label for="crpe-{{index}}">Completed RPE</label>
+        <input type="number" step="0.5" class="form-control crpe" name="crpe" id="crpe-{{index}}">  
+      </div>
+      <div class="rt">
+        <label for="rt-{{index}}">Rest Time</label>
+        <div id="min-sec-wrapper">
+          <input type="number" class="form-control" name="rt-min" id="rt-min-{{index}}" value={{set.resttime // 60}}>
+          <input type="number" class="form-control" name="rt-sec" id="rt-sec-{{index}}" value={{set.resttime % 60}}>
+        </div>
+          
+      </div>
+
+
+
+
+  </div>
+{% endmacro %}

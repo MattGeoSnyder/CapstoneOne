@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% import '/workouts/set.html' as set %}
+{% import '/workouts/timer.html' as timer %}
+
+{% block style %}
+<link rel="stylesheet" href="/static/style/workout/start-workout.css">
+<link rel="stylesheet" href="/static/style/workout/timer.css">
+{% endblock %}
+
+{% block content %}
+<div id="content-container">
+  <div id="input-container">
+    <form id='submit' action="/workouts/{{workout.id}}" method="POST">
+      <div id="exercise-wrapper">
+        {% for exercise in workout.exercises %}
+        <div class="slide">
+          <h3>{{exercise.exercise_name}}</h3>
+          <input type="hidden" name="ex-info" data-name="{{exercise.exercise_name}}"
+          data-id={{exercise.id}}>    
+          {% for i in range(exercise.sets|length) %}
+          {{set.create_set(i, exercise.sets[i], exercise.exercise_name, exercise.sets|length)}}
+          {% endfor %}
+          {% if exercise == workout.exercises|last %}
+          <div id="submission-bar">
+            <button class="btn">Finish Workout</button>
+          </div>
+          {% endif %}
+        </div>
+        {% endfor %}
+        {{timer.render_timer()}}
+      </div>
+      <div id="btn-bar">
+        <button id="back-btn" type="button" class="btn">Back</button>
+        <button id="next-set-btn" type="button" class="btn">Next Set</button>
+        <button id="next-btn" type="button" class="btn">Next Exercise</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="/static/script/start-workout.js"></script>
+{% endblock %}

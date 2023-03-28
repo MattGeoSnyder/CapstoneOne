@@ -3,15 +3,33 @@
 
     position: relative;
 
-    border: 1px solid black;
+    border: 1px solid var(--my-gray);
     border-radius: 8px;
 
-    padding: 0px 10px;
-    margin: 10px 0px;
+    padding: 3px 10px;
+    margin: 10px 10px;
+
+    box-shadow: 1px 2px var(--my-gray);
+    transition: box-shadow 0.4s ease;
+    overflow-wrap: break-word;
+    display: flex;
 }
 
 .my-card span {
     position: absolute;
     right: 10px;
     top: 10px;
+}
+
+.my-card i {
+    color: var(--my-red);
+}
+
+.my-card:has(i:hover) {
+    box-shadow: inset 0px 0px 2px 1px var(--my-gray);
+}
+
+.my-card .text {
+    width: 80%;
+    overflow-wrap: break-word;
 }

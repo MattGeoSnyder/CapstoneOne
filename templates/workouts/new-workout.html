@@ -9,13 +9,21 @@
   <div id="content-container">
     <div id="input-container">
       <form id="submit" action="/workouts/new" method="POST">
+        <div id="workout-name-wrapper">
+          <input id="workout-name" name="workout-name" type="text" placeholder="Workout Name">
+        </div>
         <div id="date-input">
           {{form.hidden_tag()}}
           {{form.scheduled.label}} {{form.scheduled(class='form-control')}}
         </div>
+        <hr>
         <div id="search-bar">
-          {{exercise_form.muscle_groups.label}} {{exercise_form.muscle_groups(class='form-control')}}
-          <button id="search-btn" type="button" class="btn">Search</button>  
+          <div id="select-wrapper">
+            {{exercise_form.muscle_groups.label}} {{exercise_form.muscle_groups(class='form-control')}}
+          </div>
+          <div id="search-button-wrapper">
+            <button id="search-btn" type="button" class="btn">Search</button>  
+          </div>
         </div>
         <div id="exercise-wrapper">
           <div id="curr" class="slide"></div>

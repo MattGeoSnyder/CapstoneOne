@@ -8,6 +8,10 @@
   <div id="content-container">
     <div id="input-container">
       <form id="submit" action="/workouts/new" method="POST">
+        <div id="workout-name-wrapper">
+          <input id="workout-name" name="workout-name" type="text" placeholder="Workout Name"
+          value={{template.name}}>
+        </div>
         <div id="date-input">
           {{form.hidden_tag()}}
           {{form.scheduled.label}} {{form.scheduled(class='form-control')}}

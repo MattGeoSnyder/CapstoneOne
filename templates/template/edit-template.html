@@ -10,7 +10,8 @@
   <div id="input-wrapper">
     <form action="/templates/{{template.id}}" method="POST">
       <div id="name-container">
-        {{form.name(placeholder='Workout Name', class='form-control', value=template.name)}}
+        {{form.name(placeholder='Routine Name', class='form-control', value=template.name)}}
+        <hr>
       </div>
       <div id="selected-wrapper" class="container-fluid">
           <h3 class="text-center">Selected Exercises</h3>
@@ -18,7 +19,9 @@
           <div id="selected-exercises">
             {% for exercise in template.exercises %}
               <div data-id={{exercise.id}} class="my-card">
-                {{exercise.exercise_name}}
+                <div class="text">
+                  {{exercise.exercise_name}}
+                </div>
                 <span><i class="fa-solid fa-minus fa-2xl"></i></span>
               </div>
             {% endfor %}

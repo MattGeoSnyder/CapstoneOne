@@ -1,6 +1,6 @@
 #content-container {
-    margin-top: 1.5rem;
     height: 80vh;
+    padding: 0px 10px;
 }
 
 #input-container {
@@ -10,39 +10,89 @@
     margin: 0 auto;
     padding: 25px 20px;
 
-    border: 2px solid gray;
-    border-radius: 10px;
-
 }
 
 form {
     width: 100%;
     height: 100%;
 
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: repeat(12, 1fr);
-    overflow-y: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
 }
 
-#date_input {
+#workout-name-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#workout-name {
+    text-align: center;
+    height: 50px;
+    font-size: 2rem;
+    background-color: var(--my-white) !important;
+    box-shadow: none !important;
+    border: none;
+    color: var(--my-red);
+    font-weight: 500;
+    letter-spacing: .15rem;
+}
+
+
+#date-input {
     width: 100%;
     padding: 0px 10px;
+    margin-top: 10px;
 
-    grid-row: 1/2;
+    display: flex;
+    justify-content: center;
+}
+
+#date-input label {
+    margin: 0px 10px;
+    align-self: center;
+}
+
+#date-input #scheduled {
+    width: 25%;
+}
+
+hr {
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 #search-bar {
     width: 100%;
     padding: 0px 10px;
-    margin-top: 1.5rem;
 
     grid-row: 2/4;
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+#search-bar #select-wrapper {
+    width: 50%;
+}
+
+#search-bar #search-button-wrapper {
+    align-self: flex-end;
+    width: 50%;
+}
+
+#search-button-wrapper button {
+    display: block;
+    margin: 0px 10px 0px auto;
 }
 
 #exercise-wrapper {
     width: 100%;
     padding: 0px 10px;
+    height: 60%;
+    margin-top: 1rem;
 
     grid-row: 4/12;
 
@@ -79,10 +129,53 @@ form {
 .setForm {
     display: grid;
 
-    grid-row: 2/6;
-    grid-template-columns: repeat(4,1fr);
-    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 50px 1fr 1fr;
+
+    position: relative;
 }
+
+.setForm div {
+    align-self: center;
+    margin: 0px 10px;
+}
+
+.setForm .tw {
+    grid-column: 1/2;
+    grid-row: 2/3;
+}
+
+.setForm .tr {
+    grid-column: 2/3;
+    grid-row: 2/3;
+}
+
+.setForm .trpe {
+    grid-column: 1/2;
+    grid-row: 3/4;
+}
+
+.setForm .rt {
+    grid-column: 2/3;
+    grid-row: 3/4;
+
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.setForm .min {
+    width: 45%;
+    margin: 0px 5px;
+    align-self: flex-end;
+}
+
+.setForm .sec {
+    width: 45%;
+    margin: 0px 5px;
+    align-self: flex-end;
+}
+
 
 .setForm h4 {
     grid-row: 1/2;
@@ -95,44 +188,98 @@ form {
 
 .setForm h4 span {
     position: absolute;
-    right: 0px;
+    left: 75px;
 }
 
 .setForm label {
-    grid-row: 2/3;
     align-self: end;
-}
-
-
-.col-1 {
-    grid-row: 3/4;
-    grid-column: 1/2;
-}
-
-.col-2 {
-    grid-row: 3/4;
-    grid-column: 2/3;
-}
-
-.col-3 {
-    grid-row: 3/4;
-    grid-column: 3/4;
-}
-
-.col-4 {
-    grid-row: 3/4;
-    grid-column: 4/5;
+    width: 100%;
 }
 
 
 #btn-bar {
+    width: 100%;
+    margin-top: 1rem;
+
     display: flex;
     justify-content: space-between;
-    grid-row: 12/13;
+}
+
+#btn-bar button {
+    width: 120px
 }
 
 #submission-bar button{
     display: block;
-    margin: 1rem auto 0px auto;
+    margin: 0px auto;
     
+}
+
+@media screen and (max-width: 1024px) {
+    #input-container {
+        width: 75%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    #input-container {
+        width: 100%;
+        padding: 20px 0px;
+    }
+}
+
+@media screen and (max-width: 605px) {
+    #date-input {
+        width: 100%;
+        padding: 0px 10px;
+        margin-top: 10px;
+        
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+    }
+    
+    #date-input label {
+        width: 40%;        
+    }
+    
+    #date-input #scheduled {
+        width: 40%;
+    }
+    
+}
+
+@media screen and (max-width: 425px) {
+    #btn-bar {
+        flex-wrap: wrap;
+    }
+    #add-set-btn {
+        margin-left: 50px;
+    }
+    #next-btn {
+        margin: 10px auto 0px auto;
+    }
+    .setForm .rt {
+        justify-content: center;
+    }
+    #rt-min {
+        width: 50%;
+        margin: 0px;
+    }
+    #rt-sec {
+        width: 50%;
+        margin: 0px;
+    }
+
+}
+
+@media screen and (max-width: 400px) {
+    #date-input label {
+        width: 60%;        
+    }
+    
+    #date-input #scheduled {
+        width: 60%;
+    }
+
 }

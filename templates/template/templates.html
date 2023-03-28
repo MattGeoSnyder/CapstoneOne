@@ -1,28 +1,50 @@
 {% extends 'base.html' %}
 
+{% block style %}
+<link rel="stylesheet" href="/static/style/template/template.css">
+{% endblock %}
+
 {% block content %}
-<div class="container-fluid">
-  <div class="container w-50 h-50 mt-3">
-    <div class="container-fluid position-relative" style="height: 30px">
-      <a href="/templates/new">
-        <i class="fa-solid fa-plus position-absolute end-0">Add Template</i>
+<div id="main-content" class="container-fluid">
+  <div id="content-wrapper" class="container-fluid">
+    <div id="banner">
+      <h3>Templates</h3>
+      <a id="add-template" href="/templates/new">
+        Create Template<i class="fa-solid fa-plus fa-2x"></i>
       </a>
+      <p>
+        Templates are a way for you to create regularly recurring workouts more quickly. 
+        In a template you can select exercises and they will be saved here for you to create
+        workouts from.
+      </p>
     </div>
     {% if templates %}
-      {% for template in templates %}
-        <div class="container-fluid card">
-          <a href="/templates/{{template.id}}">{{template.name}}</a>
-          <form action="/templates/{{template.id}}/delete">
-            <button class="btn">Delete</button>
-          </form>
-          <form action="/workouts/new/templates/{{template.id}}">
-            <button class="btn">Create Workout</button>
-          </form>
-        </div>
-      {% endfor %}
+      <div id="templates">
+        {% for template in templates %}
+          <div class="template">
+            <div class="template-info">
+              <a class="template-link" href="/templates/{{template.id}}"><h3>{{template.name}}</h3></a>
+              <h4>Exercises <i class="fa-solid fa-caret-down"></i></h4>
+              <div class="exercise-wrapper">
+                {% for exercise in template.exercises %}
+                  {{exercise.exercise_name}} <br>
+                {% endfor %}  
+              </div>
+            </div>
+            <div class="button-bar">
+              <button class="btn"> <a href="/templates/{{template.id}}/delete">Delete</a></button>
+              <button class="btn"><a href="/workouts/new/templates/{{template.id}}">Create Workout</a></button>
+            </div>  
+          </div>
+        {% endfor %}
+      </div>
     {% else %}
       <h4 class="text-center">No templates to display</h4>
     {% endif %}
   </div>
 </div>
+{% endblock %}
+
+{% block script %}
+<script src="/static/script/home.js"></script>
 {% endblock %}

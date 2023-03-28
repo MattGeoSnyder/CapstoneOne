@@ -1,11 +1,11 @@
 form {
-    height: 100vh;
+    height: fit-content;
 }
 
 #form-wrapper {
     overflow-x: hidden;
     overflow-y: none;
-    height: 100vh;
+    height: 85vh;
     width: 35%;
 }
 
@@ -21,6 +21,18 @@ form {
     }
 }
 
+#login-here {
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#login-here a {
+    color: var(--my-red);
+    padding-left: 3px;
+}
+
 #req-info {
     right: 0%;
     transition: right .3s ease-in;
@@ -28,6 +40,11 @@ form {
 
 #req-info.slide {
     right: 100%;
+}
+
+#req-info button {
+    margin-right: 10px;
+    width: 110px;
 }
 
 #add-info {
@@ -39,6 +56,40 @@ form {
     left: 0%;
 }
 
-button {
-    border: 2px solid black;
+
+input {
+    margin-bottom: 1rem;
+}
+
+select {
+    background-color: var(--my-gray) !important;
+}
+
+#button-bar {
+    margin-top: 1.5rem;
+}
+
+#button-bar button {
+    width: 110px;
+}
+
+
+@media screen and (max-width: 375px) {
+    #login-here {
+        height: 50px;
+        flex-wrap: wrap;
+    }
+    #login-here span {
+        display: block;
+    }
+}
+
+@media screen and (max-width: 425px) {
+    #button-bar {
+        flex-wrap: wrap;
+    }
+    #submit {
+        order: 3;
+        margin: 1.5rem auto;
+    }
 }

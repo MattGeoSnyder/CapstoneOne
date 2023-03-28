@@ -6,7 +6,7 @@ body {
 
 #content-container {
     height: 90%;
-    margin-top: 2rem;
+    margin-top: 1rem;
 }
 
 @media screen and (max-height: 700px) {
@@ -22,10 +22,25 @@ body {
 
     padding: 20px 15px;
     margin: 0 auto;
-    border: 2px solid gray;
-    border-radius: 10px;
+    
 
     position: relative;
+}
+
+#name {
+    text-align: center;
+    height: 50px;
+    font-size: 2rem;
+    background-color: var(--my-white) !important;
+    box-shadow: none !important;
+    border: none;
+    color: var(--my-red);
+    font-weight: 500;
+    letter-spacing: .15rem;
+}
+
+hr {
+    margin: 0.5rem 0 1rem 0;
 }
 
 @media screen and (max-width: 1024px) {
@@ -59,8 +74,6 @@ form {
 }
 
 #selected-wrapper {
-    border: 2px solid gray;
-    border-radius: 10px;
     grid-row: 2/6;
     display: grid;
     grid-template-columns: 1fr;
@@ -81,8 +94,10 @@ form {
     position: absolute;
     bottom: 0px;
     right: 0px;
+}
 
-    border: 1px solid black;
+#muscle_groups {
+    background-color: var(--my-gray);
 }
 
 #selected-wrapper h3 {
@@ -96,9 +111,6 @@ form {
 }
 
 #choices-wrapper {
-    border: 2px solid gray;
-    border-radius: 10px;
-
     overflow-y: hidden;
     grid-row: 7/12;
 
@@ -124,5 +136,11 @@ form {
     grid-row: 12/13;
     place-self: center;
 
-    border: 1px solid black;
 }
+
+@media screen and (max-width: 425px) {
+    #input-wrapper {
+        padding: 0px;
+    }
+}
+

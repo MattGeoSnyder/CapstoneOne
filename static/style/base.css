@@ -1,0 +1,89 @@
+:root {
+    --my-red: #ff1b1c;
+    --my-black: #0c0c0c;
+    --my-gray: #d7d8d5;
+    --my-white: #fffffa;
+    --my-purple: #7e3f8f;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+    padding: 0 5px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+    padding: 0 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--my-red);
+    border-radius: 10px;
+    height: 20px;
+    padding: 0 5px;
+}
+
+body {
+    background-color: var(--my-white);
+    color: var(--my-black) !important;
+    
+    height: 1vh;
+}
+
+.navbar {
+    background-color: var(--my-red) !important;
+}
+
+.navbar a {
+    color: var(--my-white);
+}
+
+.navlink {
+    color: var(--my-purple) !important;
+}
+
+button {
+    background-color: var(--my-red) !important;
+    color: var(--my-white) !important;
+}
+
+button:hover {
+    background-color: var(--my-white) !important;
+    color: var(--my-red) !important;
+    border: 1px solid var(--my-black), !important;
+    box-shadow: inset 0px 0px 2px 2px var(--my-gray) !important;
+    
+}
+
+button:disabled {
+    background-color: var(--my-gray) !important;
+}
+
+input {
+    background-color: var(--my-gray) !important;
+}
+
+input:focus {
+    box-shadow: none !important;
+    border: 1px solid var(--my-red);
+    outline: 0;
+    box-shadow: inset 0 1px 1px var(--my-red), 0 0 8px var(--my-red) !important;
+}
+
+.dropdown-menu {
+    background-color: var(--my-red);
+}
+
+.dropdown-item:hover {
+    background-color: var(--my-gray);
+}
+
+select:focus {
+    border: 1px solid var(--my-red);
+    outline: 0;
+    box-shadow: inset 0 1px 1px var(--my-red), 0 0 8px var(--my-red) !important;
+}
+
+option:focus {
+    background-color: var(--my-red) !important;
+}

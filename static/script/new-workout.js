@@ -71,56 +71,76 @@ function createSetForm() {
     deleteIcon.innerHTML = '<i class="fa-solid fa-x"></i>';
     deleteIcon.addEventListener('click', function(e) {
         let setForm = e.target.parentElement.parentElement.parentElement;
-        console.log(setForm);
         curr.removeChild(setForm);
     });
     h4.appendChild(deleteIcon);
 
+    let div = document.createElement('div');
+    div.classList.add('tw');
     let tw_label = document.createElement('label');
     let tw_input = document.createElement('input')
     tw_input.id = 'tw';
     tw_input.type = 'number';
     tw_input.name = 'tw';
-    tw_input.classList.add('form-control', 'col-1');
+    tw_input.classList.add('form-control');
     tw_label.for = 'tw';
     tw_label.innerText = 'Target Weight';
-    setWrapper.appendChild(tw_label);
-    setWrapper.appendChild(tw_input);
+    div.appendChild(tw_label);
+    div.appendChild(tw_input);
+    setWrapper.appendChild(div);
 
+    div = document.createElement('div');
+    div.classList.add('tr');
     let tr_label = document.createElement('label');
     let tr_input = document.createElement('input')
     tr_input.id = 'tr';
     tr_input.type = 'number';
     tr_input.name = 'tr';
-    tr_input.classList.add('form-control', 'col-2');
+    tr_input.classList.add('form-control');
     tr_label.for = 'tr';
     tr_label.innerText = 'Target Reps';
-    setWrapper.appendChild(tr_label);
-    setWrapper.appendChild(tr_input);
+    div.appendChild(tr_label);
+    div.appendChild(tr_input);
+    setWrapper.appendChild(div);
 
 
+    div = document.createElement('div');
+    div.classList.add('trpe');
     let trpe_label = document.createElement('label');
     let trpe_input = document.createElement('input')
     trpe_input.id = 'trpe';
     trpe_input.type = 'number';
     trpe_input.name = 'trpe';
-    trpe_input.classList.add('form-control', 'col-3');
+    trpe_input.classList.add('form-control');
     trpe_label.for = 'trpe';
     trpe_label.innerText = 'Target RPE';
-    setWrapper.appendChild(trpe_label);
-    setWrapper.appendChild(trpe_input);
+    div.appendChild(trpe_label);
+    div.appendChild(trpe_input);
+    setWrapper.appendChild(div);
 
 
+    div = document.createElement('div');
+    div.classList.add('rt');
+    let rtMin = document.createElement('input');
+    let rtSec = document.createElement('input');
+    rtMin.type = 'number';
+    rtSec.type = 'number';
+
+    rtMin.placeholder = 'min';
+    rtSec.placeholder = 'sec';
+    rtMin.id = 'rt-min';
+    rtSec.id = 'rt-sec';
+    
+    rtMin.classList.add('form-control', 'min');
+    rtSec.classList.add('form-control', 'sec');
     let rt_label = document.createElement('label');
-    let rt_input = document.createElement('input')
-    rt_input.id = 'rt';
-    rt_input.type = 'number';
-    rt_input.name = 'rt';
-    rt_input.classList.add('form-control', 'col-4');
-    rt_label.for = 'rt';
+    rt_label.for = 'rt-min';
     rt_label.innerText = 'Rest Time';
-    setWrapper.appendChild(rt_label);
-    setWrapper.appendChild(rt_input);
+    div.appendChild(rt_label);
+    div.appendChild(rtMin);
+    div.appendChild(rtSec);
+
+    setWrapper.appendChild(div);
 
     curr.appendChild(setWrapper);
 }
@@ -144,14 +164,17 @@ function selectExercise(card) {
 
 function createExerciseCard(id, name) {
     card = document.createElement('div');
-    card.innerText = name;
     card.setAttribute('data-id', id);
     card.classList.add('my-card');
+
+    textContainer = document.createElement('div');
+    textContainer.classList.add('text');
+    textContainer.innerText = name;
+    card.appendChild(textContainer);
     
     icon = document.createElement('span');
     icon.innerHTML = '<i class="fa-solid fa-plus fa-2xl"></i>';
     icon.addEventListener('click', function(e) {
-        console.log(e.target);
         card = e.target.parentElement.parentElement;
         selectExercise(card);
     });
@@ -165,6 +188,7 @@ function createExerciseCard(id, name) {
 
 let searchBtn = document.querySelector('#search-btn')
 searchBtn.addEventListener('click', async function() {
+    curr.innerHTML = '';
     let exercises = await getExercises();
 
     exercises.forEach(exercise => {
@@ -229,7 +253,6 @@ function setValues() {
     let slides = document.querySelectorAll('.slide');
     for (let slide of slides) {
         let input = slide.querySelector('input[name="ex-info"]');
-        console.log(input);
         let sets = slide.querySelectorAll('.setForm');
         let exValues = {exId: input.dataset.id,
                         name: input.dataset.name,
@@ -242,7 +265,7 @@ function setValues() {
                     let setValues = {tw: setInputs[0].value,
                                     tr: setInputs[1].value,
                                     trpe: setInputs[2].value,
-                                    rt: setInputs[3].value};
+                                    rt: parseInt(setInputs[3].value)*60 + parseInt(setInputs[4].value)};
                     exValues.sets.push(setValues);
                 }
             }   

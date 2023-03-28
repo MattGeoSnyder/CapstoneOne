@@ -26,7 +26,7 @@ class User(db.Model):
     preferred_units = db.Column(
         db.Integer, db.ForeignKey('units.id'), default=1)
 
-    units = db.relationship('Unit')
+    unit = db.relationship('Unit')
 
     @classmethod
     def signup(cls, first_name, last_name, username, password,
@@ -84,6 +84,7 @@ class Workout(db.Model):
     completed = db.Column(db.Date, nullable=True)
 
     exercises = db.relationship('WorkoutExercise', backref='workout')
+    user = db.relationship('User', backref='workouts')
 
 
 class WorkoutExercise(db.Model):

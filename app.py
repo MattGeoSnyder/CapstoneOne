@@ -242,5 +242,24 @@ def create_from_template(temp_id):
 
 
 @app.route('/workouts/<int:workout_id>', methods=['GET', 'POST'])
-def start_workout():
-    return render_template('start-workout.html')
+def start_workout(workout_id):
+    workout = Workout.query.get_or_404(workout_id)
+    if request.method == 'POST':
+        workout = Workout.query.get_or_404(workout_id)
+        workout.completed = datetime.today()
+        exercises = workout.exercises
+        res_data = request.form.getlist('ex-info')
+        for ex, ex_data in zip(exercises, res_data):
+            # pdb.set_trace()
+            data = json.loads(ex_data)
+            for set, set_data in zip(ex.sets, data['sets']):
+                set.target_weight = set_data['tw']
+                set.completed_weight = set_data['cw']
+                set.target_reps = set_data['tr']
+                set.completed_reps = set_data['cr']
+                set.target_RPE = set_data['trpe']
+                set.completed_RPE = set_data['crpe']
+                set.resttime = set_data['rt']
+        db.session.commit()
+        return redirect('/')
+    return render_template('/workouts/start-workout.html', workout=workout)
