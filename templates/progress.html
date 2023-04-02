@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block style %}
+<link rel="stylesheet" href="./static/style/progress.css">
+{% endblock %}
+
+{% block content %}
+<div id="content-wrapper">
+  <div id="header">
+    <form action="">
+      {{form.month.label}} {{form.month}} 
+      {{form.year.label}} {{form.year(value=datetime.today().year)}}
+      <button class="btn">Search</button>
+    </form>
+  </div>
+  <div id="completed-wrapper">
+    <h3>Completed Exercises</h3>  
+    <hr>
+    <div></div>
+  </div>
+</div>
+{% endblock %}

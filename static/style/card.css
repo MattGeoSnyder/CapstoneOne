@@ -33,3 +33,12 @@
     width: 80%;
     overflow-wrap: break-word;
 }
+
+.my-card a {
+    color: var(--my-red);
+    text-decoration: none;
+}
+
+.my-card a:hover {
+    text-decoration: underline;
+}

@@ -15,8 +15,7 @@ function setSlidePosition() {
             slides[i].id = 'curr';
             curr = slides[i];
         }
-        else if (i === slides.length - 1) {
-            slides[i].id = 'tail';
+        if (i === slides.length - 1) {
             tail = slides[i];
         }
     }
@@ -218,9 +217,9 @@ function setValues() {
             setInputs = set.querySelectorAll('input');
             if (setInputs.length > 0) {
                 if (Array.from(setInputs).map((input) => input.value).some((val) => val !== '')){
-                    let setValues = {tw: setInputs[0].value,
-                                    tr: setInputs[1].value,
-                                    trpe: setInputs[2].value,
+                    let setValues = {tw: parseInt(setInputs[0].value),
+                                    tr: parseInt(setInputs[1].value),
+                                    trpe: parseFloat(setInputs[2].value),
                                     rt: parseInt(setInputs[3].value)*60 + parseInt(setInputs[4].value)};
                     exValues.sets.push(setValues);
                 }

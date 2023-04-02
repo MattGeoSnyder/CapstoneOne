@@ -1,4 +1,4 @@
-const WGER = 'https://wger.de/api/v2';
+// const WGER = 'https://wger.de/api/v2';
 
 let curr = document.querySelector('#curr');
 let head = curr;
@@ -167,10 +167,16 @@ function createExerciseCard(id, name) {
     card.setAttribute('data-id', id);
     card.classList.add('my-card');
 
-    textContainer = document.createElement('div');
-    textContainer.classList.add('text');
-    textContainer.innerText = name;
-    card.appendChild(textContainer);
+    
+    let link = document.createElement('a');
+    link.dataset.bsToggle = "offcanvas";
+    link.href = "#workout-detail";
+    link.innerText = name;
+    link.addEventListener('click', async function(e) {
+        getWorkoutDetail(e.target);
+    });
+
+    card.appendChild(link);
     
     icon = document.createElement('span');
     icon.innerHTML = '<i class="fa-solid fa-plus fa-2xl"></i>';
@@ -262,9 +268,9 @@ function setValues() {
             setInputs = set.querySelectorAll('input');
             if (setInputs.length > 0) {
                 if (Array.from(setInputs).map((input) => input.value).some((val) => val !== '')){
-                    let setValues = {tw: setInputs[0].value,
-                                    tr: setInputs[1].value,
-                                    trpe: setInputs[2].value,
+                    let setValues = {tw: parseInt(setInputs[0].value),
+                                    tr: parseInt(setInputs[1].value),
+                                    trpe: parseFloat(setInputs[2].value),
                                     rt: parseInt(setInputs[3].value)*60 + parseInt(setInputs[4].value)};
                     exValues.sets.push(setValues);
                 }

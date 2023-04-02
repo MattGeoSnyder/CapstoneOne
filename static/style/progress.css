@@ -1,0 +1,16 @@
+#content-wrapper {
+    height: 100vh;
+}
+
+#header {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 5px;
+}
+
+h3 {
+    text-align: center;
+}
+
+

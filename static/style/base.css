@@ -93,3 +93,29 @@ select:focus {
 option:focus {
     background-color: var(--my-red) !important;
 }
+
+
+#detail-image {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    border: 2px solid var(--my-black);
+    gap: 10px;
+}
+
+#detail-image i {
+    color: var(--my-red);
+    transform: rotate(-45deg);
+}
+
+#detail-body {
+    margin-top: 1rem;
+}

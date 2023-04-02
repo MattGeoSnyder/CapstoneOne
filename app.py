@@ -3,8 +3,10 @@ from flask_debugtoolbar import DebugToolbarExtension
 from secret_keys import app_secret_key
 from models import db, connect_db, User, Template, TemplateExercise, Workout, WorkoutExercise, Set
 from sqlalchemy.exc import IntegrityError
-from forms import SignupForm, LoginForm, TemplateForm, WorkoutForm
+from forms import SignupForm, LoginForm, TemplateForm, WorkoutForm, DateForm
 from datetime import date, datetime
+from calendar import monthrange
+from urllib.parse import parse_qsl
 import requests
 import json
 import pdb
@@ -125,6 +127,7 @@ def templates():
 def edit_template(temp_id):
     form = TemplateForm()
     results = requests.get(f'{WGER}/muscle').json()
+    template = TemplateExercise()
     muscle_groups = [(res['id'], res['name_en'] if res['name_en']
                       else res['name']) for res in results['results']]
     form.muscle_groups.choices = muscle_groups
@@ -140,7 +143,8 @@ def edit_template(temp_id):
         for ex in exercises:
             data = json.loads(ex)
             temp_ex = TemplateExercise(exercise_id=data['id'],
-                                       exercise_name=data['name'])
+                                       exercise_name=data['name'],
+                                       muscle_group=data['muscle'])
             template.exercises.append(temp_ex)
         db.session.commit()
         return redirect('/templates')
@@ -162,7 +166,7 @@ def create_template():
 
         # Need to check that there are indeed exercises selected. Maybe even a
         # front end validation by initially disabling create button.
-        template_name = request.form.get('name')
+        template_name = form.name.data
         exercises = request.form.getlist('exercise')
         template = Template(name=template_name, user_id=g.user.id)
         db.session.add(template)
@@ -195,14 +199,15 @@ def delete_template(temp_id):
 def create_workout():
     form = WorkoutForm()
     exercise_form = TemplateForm()
-    results = requests.get(f'{WGER}/muscle').json()
+    results = requests.get(f'{WGER}/muscle?ordering=muscle').json()
     muscle_groups = [(res['id'], res['name_en'] if res['name_en']
                       else res['name']) for res in results['results']]
+    muscle_groups = sorted(muscle_groups)
     exercise_form.muscle_groups.choices = muscle_groups
     if form.validate_on_submit():
         # pdb.set_trace()
         workout = Workout(user_id=g.user.id,
-                          scheduled=form.scheduled.data, name=exercise_form.name.data)
+                          scheduled=form.scheduled.data, name=form.name.data)
         db.session.add(workout)
         exercises = request.form.getlist('ex-info')
         for exercise in exercises:
@@ -235,6 +240,7 @@ def return_templates():
 @app.route('/workouts/new/templates/<int:temp_id>', methods=['GET', 'POST'])
 def create_from_template(temp_id):
     template = Template.query.get_or_404(temp_id)
+    # pdb.set_trace()
     form = WorkoutForm()
     if form.validate_on_submit():
         return redirect('/')
@@ -244,6 +250,7 @@ def create_from_template(temp_id):
 @app.route('/workouts/<int:workout_id>', methods=['GET', 'POST'])
 def start_workout(workout_id):
     workout = Workout.query.get_or_404(workout_id)
+    form = TemplateForm()
     if request.method == 'POST':
         workout = Workout.query.get_or_404(workout_id)
         workout.completed = datetime.today()
@@ -263,3 +270,51 @@ def start_workout(workout_id):
         db.session.commit()
         return redirect('/')
     return render_template('/workouts/start-workout.html', workout=workout)
+
+
+@app.route('/workouts/delete/<int:workout_id>', methods=['POST'])
+def delete_workout(workout_id):
+    workout = Workout.query.get_or_404(workout_id)
+    db.session.delete(workout)
+    db.session.commit()
+    return redirect('/')
+
+
+@app.route('/completed')
+def get_completed_workouts():
+    params = parse_qsl(request.url)
+    # pdb.set_trace()
+    month = int(params[0][1])
+    year = int(params[1][1])
+    range = monthrange(year, month)
+    start_date = datetime(year, month, 1)
+    end_date = datetime(year, month, range[1])
+
+    query = Workout.query.filter(Workout.user_id == g.user.id).filter(
+        Workout.completed >= start_date).filter(Workout.completed <= end_date)
+    workouts = query.all()
+    # pdb.set_trace()
+    results = {'workouts': []}
+    for w_index, workout in enumerate(workouts):
+        results['workouts'].append({'completed': workout.completed.strftime('%m/%d/%Y'),
+                                    'name': workout.name,
+                                    'exercises': []})
+        for ex_index, exercise in enumerate(workout.exercises):
+            exercises = [{'name': exercise.exercise_name,
+                          'sets': []}]
+            results['workouts'][w_index]['exercises'] = exercises
+            for set in exercise.sets:
+                results['workouts'][w_index]['exercises'][ex_index]['sets'].append({'tw': set.target_weight,
+                                                                                    'cw': set.completed_weight,
+                                                                                    'tr': set.target_reps,
+                                                                                    'cr': set.completed_reps,
+                                                                                    'trpe': set.target_RPE,
+                                                                                    'crpe': set.completed_RPE,
+                                                                                    'resttime': set.resttime})
+    return json.dumps(results)
+
+
+@app.route('/progress')
+def get_progress():
+    form = DateForm()
+    return render_template('progress.html', form=form, datetime=datetime)

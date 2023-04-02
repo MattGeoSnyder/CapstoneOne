@@ -1,5 +1,3 @@
-const WGER = 'https://wger.de/api/v2';
-
 let curr;
 let head;
 let tail;
@@ -21,7 +19,7 @@ function setSlidePosition() {
             slides[i].id = 'curr';
             curr = slides[i];
         }
-        else if (i === slides.length - 1) {
+        if (i === slides.length - 1) {
             tail = slides[i];
         }
     }

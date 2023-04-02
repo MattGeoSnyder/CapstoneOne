@@ -1,4 +1,3 @@
-const WGER = 'https://wger.de/api/v2';
 let searchBtn = document.querySelector('#search-bar button');
 let selectedExs = document.querySelector('#selected-exercises');
 
@@ -9,6 +8,7 @@ async function getExercises() {
     return res.data.results;
 }
 
+
 function createExerciseCard(id, name, index) {
     let exChoices = document.querySelector('#exercise-choices');
     let select = document.querySelector('#search-bar select');
@@ -16,7 +16,17 @@ function createExerciseCard(id, name, index) {
     let muscleGroup = select.options[optionIndex].innerText;
     
     card = document.createElement('div');
-    card.innerText = name;
+
+    let link = document.createElement('a');
+    link.dataset.bsToggle = "offcanvas";
+    link.href = "#workout-detail";
+    link.innerText = name;
+    link.addEventListener('click', async function(e) {
+        getWorkoutDetail(e.target);
+    });
+
+    card.appendChild(link);
+
     card.dataset.id = id;
     card.dataset.muscle = muscleGroup;
     card.dataset.index = index;
@@ -93,4 +103,18 @@ searchBtn.addEventListener('click', async (e) => {
         createExerciseCard(exercise.id, exercise.name, index);
     });
 });
+
+
+window.addEventListener('load', function() {
+    let exercises = document.querySelectorAll('.my-card');
+    for (let exercise of exercises) {
+        console.log(exercise);
+        exercise.setAttribute('selected', true);
+        let icon = exercise.querySelector('i');
+        icon.addEventListener('click', cardHandler);
+
+    }
+});
+
+
 

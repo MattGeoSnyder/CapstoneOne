@@ -23,6 +23,9 @@
                   {{exercise.exercise_name}}
                 </div>
                 <span><i class="fa-solid fa-minus fa-2xl"></i></span>
+                <input type="hidden" value='{"id": "{{exercise.exercise_id}}", 
+                "name": "{{exercise.exercise_name}}",
+                "muscle": "{{exercise.muscle_group}}"}' name="exercise">
               </div>
             {% endfor %}
           </div>

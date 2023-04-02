@@ -81,20 +81,32 @@
 }
 
 #upcoming-workouts {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
     min-height: 40%;
     height: fit-content;
+}
+
+#upcoming-workouts:not([class='workout']) {
+    text-align: center;
 }
 
 #completed-wrapper {
     min-height: 40%;
-    height: fit-content;
 }
 
 #completed-workouts {
-    height: 100%;
-
-    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    min-height: 40%;
+    height: fit-content;
 }
+
+
 
 .workout {
     width: 35%;
@@ -130,11 +142,29 @@
 }
 
 .workout-header h3 a:hover {
-    color: var(--my-black)
+    color: var(--my-black);
 }
 
 i {
-    color: var(--my-red)
+    color: var(--my-red);
+}
+
+.del {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
+.del i {
+    color: var(--my-black);
+}
+
+.del i:hover {
+    color: var(--my-red);
+}
+
+.del button {
+    border: none;
 }
 
 hr {
@@ -174,5 +204,11 @@ hr {
         display: block;
         width: 100%;
         margin: 5px 0px;
+    }
+}
+
+@media screen and (max-width: 325px) {
+    .workout-header span {
+        font-size: 0.75rem;
     }
 }
