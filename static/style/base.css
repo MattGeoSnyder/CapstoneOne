@@ -4,6 +4,8 @@
     --my-gray: #d7d8d5;
     --my-white: #fffffa;
     --my-purple: #7e3f8f;
+    --text-gray: #9b9b9b;
+    --text-gray-two: #515151;
 }
 
 ::-webkit-scrollbar {
@@ -27,7 +29,7 @@ body {
     background-color: var(--my-white);
     color: var(--my-black) !important;
     
-    height: 1vh;
+    overflow-x: hidden;
 }
 
 .navbar {
@@ -48,6 +50,56 @@ body {
     color: var(--my-purple) !important;
 }
 
+#logout {
+    position: absolute;
+    right: 10px;
+}
+
+#profile-nav-item {
+    position: absolute;
+    right: 90px;
+    top: 0px;
+}
+
+
+#profile {
+    border: 2px solid var(--my-white);
+    height: 40px;
+    width: 40px;
+    border-radius: 999%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@media screen and (max-width: 768px) {
+    #profile-nav-item {
+        position: relative;
+        left: 0px;
+    }
+    #profile {
+        border: none;
+        position: relative;
+        display: block;
+        width: 100%;
+        right: none;
+    }
+    #profile a::after {
+        content: 'Profile';
+        visibility: visible;
+        text-decoration: none;
+    }
+    #profile i::before {
+        content: none;
+    }
+    #logout {
+        position: relative;
+        right: none;
+        left: 0px;
+    }    
+
+}
+
 button {
     background-color: var(--my-red) !important;
     color: var(--my-white) !important;
@@ -66,7 +118,7 @@ button:disabled {
 }
 
 input {
-    background-color: var(--my-gray) !important;
+    background-color: var(--bs-primary-bg-subtle) !important;
 }
 
 input:focus {
@@ -81,7 +133,7 @@ input:focus {
 }
 
 .dropdown-item:hover {
-    background-color: var(--my-gray);
+    background-color: var(--bs-primary-bg-subtle);
 }
 
 select:focus {
@@ -118,4 +170,46 @@ option:focus {
 
 #detail-body {
     margin-top: 1rem;
+}
+
+#profile i {
+    color: var(--my-white);
+}
+
+#background {
+    height: 100vh;
+    width: 100vw;
+    padding: 0 10px;
+    position: relative;
+
+    overflow-x: hidden;
+}
+
+.bg-icon {
+    font-size:4rem;
+    color: var(--my-red);
+    position: absolute;
+
+    z-index: -1;
+}
+
+#left, #right {
+    background-color: rgb(255, 224, 224);
+    width: 10%;
+    height: 100%;
+    position: absolute;
+}
+
+#left {
+    left: 0px;
+}
+
+#right {
+    right: 0px;
+}
+
+@media screen and (max-width:1024px) {
+    .bg-icon i {
+        visibility: hidden;
+    }
 }

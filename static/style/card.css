@@ -37,6 +37,7 @@
 .my-card a {
     color: var(--my-red);
     text-decoration: none;
+    font-weight: 600;
 }
 
 .my-card a:hover {

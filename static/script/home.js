@@ -1,5 +1,5 @@
 window.addEventListener('DOMContentLoaded', function() {
-    let icons = document.querySelectorAll('i');
+    let icons = document.querySelectorAll('#main-content i');
 
     for (let icon of icons) {
         icon.dataset.down = false;

@@ -1,12 +1,63 @@
 {% macro render_set(index, set) %}
 <div class="set">
-<span style="color: var(--my-red);">Set {{index}}</span>
-<div class="tw">Target weight: {{set.target_weight}} {{g.user.unit.abbr}}s</div>
-<div class="cw">Completed weight: {{set.completed_weight}} {{g.user.unit.abbr}}s</div>
-<div class="tr">Target reps: {{set.target_reps}}</div>
+  <div class="set-header">
+    <span  class="set-index" style="color: var(--my-red);">Set {{index}}</span>
+    <span class="desc">(Completed/Target)</span>
+  </div>
+
+  <div class="set-info">
+    <div class="weight">
+      <span>Weight:</span> <span>
+        {% if set.completed_weight %}
+          {{set.completed_weight}}
+        {% endif %}
+        {% if set.target_weight %}
+          /{{set.target_weight}} 
+        {% endif %}  
+          {{g.user.unit.abbr}}s</span>
+    </div>
+    
+    <div class="reps">
+      <span>Reps:</span> 
+      <span>
+        {% if set.completed_reps %}
+          {{set.completed_reps}}
+        {% endif %}
+        {% if set.target_reps %}
+          /{{set.target_reps}} 
+        {% endif %} reps
+      </span>
+    </div>
+    
+    <div class="rpe">
+      <span>RPE:</span>
+      <span>
+        {% if set.completed_rpe %}
+          {{set.completed_rpe}}
+        {% endif %}
+        {% if set.target_rpe %}
+          /{{set.target_rpe}} 
+        {% endif %} 
+        </span>
+    </div>
+    
+    <div class="resttime">
+      <span>Rest time:</span>
+      <span>
+        {% if set.resttime %}
+          {{set.resttime // 60 }}m {{set.resttime % 60}}s
+        {% endif %}
+      </span>
+    </div>
+  </div>
+    
+
+<!-- <div class="tw">Target weight: {{set.target_weight}} {{g.user.unit.abbr}}s</div> -->
+<!-- <div class="cw">Completed weight: {{set.completed_weight}} {{g.user.unit.abbr}}s</div> -->
+<!-- <div class="tr">Target reps: {{set.target_reps}}</div>
 <div class="cr">Completed reps: {{set.completed_reps}}</div>
 <div class="trpe">Target RPE: {{set.target_RPE}}</div>
 <div class="crpe">Completed RPE: {{set.completed_RPE}}</div>
-<div class="rt">Rest time: {{set.resttime//60}}:{{set.resttime % 60}}</div>
+<div class="rt">Rest time: {{set.resttime//60}}:{{set.resttime % 60}}</div> -->
 </div>
 {% endmacro %}

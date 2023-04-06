@@ -5,18 +5,33 @@
 {% endblock %}
 
 {% block content %}
-<div id="content-wrapper">
-  <div id="header">
-    <form action="">
-      {{form.month.label}} {{form.month}} 
-      {{form.year.label}} {{form.year(value=datetime.today().year)}}
-      <button class="btn">Search</button>
-    </form>
-  </div>
-  <div id="completed-wrapper">
-    <h3>Completed Exercises</h3>  
-    <hr>
-    <div></div>
-  </div>
+{% if form.exercise.choices %}
+  <div id="content-wrapper">
+    <div id="header">
+      <form action="">
+        <div>
+          {{form.month.label}} {{form.month(class='form-control')}} 
+        </div>
+        <div>
+          {{form.year.label}} {{form.year(value=datetime.today().year, class='form-control', value=datetime.today().year)}}
+        </div>
+        <div>
+          {{form.exercise.label}} {{form.exercise(class='form-control')}}
+        </div>
+        <button class="btn">Search</button>
+      </form>
+    </div>
+    
+    {% if plot %}
+      {% include 'plot.html' %}
+    {% else %}
+      <h3>No Information Found</h3>  
+    {% endif %}
+{% else %}
+  <h3>You haven't completed any workouts yet. Get a workout in and come back later!</h3>
+{% endif %}
+
+  
+  
 </div>
 {% endblock %}

@@ -52,6 +52,9 @@ class User(db.Model):
                 return user
         return False
 
+    def name(self):
+        return f'{self.first_name} {self.last_name}'
+
 
 class Template(db.Model):
     __tablename__ = 'templates'

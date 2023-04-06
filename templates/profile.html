@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block style %}
+  <link rel="stylesheet" href="./static/style/profile.css">
+{% endblock %}
+
+{% block content %}
+<div id="content-wrapper">
+  <h3>Your Info</h3>
+  <div id="user-info">
+    <div id="name-info"><span>Name:</span> {% if g.user.name() != ' ' %} {{g.user.name()}} {% endif %}</div>
+    <div id="height-info"><span>Height:</span> {% if g.user.height %} {{g.user.height}} {% endif %}</div>
+    <div id="weight-info"><span>Weight:</span> {% if g.user.weight %} {{g.user.weight}} {% endif %} </div>
+    <div id="birthday-info"><span>Birthday:</span> {% if g.user.birthday %} {{g.user.birthday.strftime('%m/%d/%Y')}} {% endif %}</div>
+    <div id="unit-info"><span>Preferred Units:</span> {{g.user.unit.abbr}}s</div>
+  </div>
+  <form action="/profile" method="POST">
+    {{form.hidden_tag()}}
+    <div>{{form.first_name.label}}{{form.first_name(class='form-control')}}</div>
+    <div>{{form.last_name.label}}{{form.last_name(class='form-control')}}</div>
+    <div>{{form.height.label}}{{form.height(class='form-control')}}</div>
+    <div>{{form.weight.label}}{{form.weight(class='form-control')}}</div>
+    <div>{{form.birthday.label}}{{form.birthday(class='form-control')}}</div>
+    <div>{{form.preferred_unit.label}}{{form.preferred_unit(class='form-control')}}</div>
+    <div id="button-bar">
+      <button class="btn">Submit</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

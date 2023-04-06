@@ -1,5 +1,3 @@
-const WGER = 'https://wger.de/api/v2';
-
 let curr;
 let head;
 let tail;

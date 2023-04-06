@@ -26,6 +26,7 @@ form {
     display: flex;
     justify-content: center;
     align-items: center;
+    font-size: 40px;
 }
 
 #workout-name {
@@ -48,6 +49,8 @@ form {
 
     display: flex;
     justify-content: center;
+    font-size: 1.5rem;
+    color: var(--text-gray-two);
 }
 
 #date-input label {
@@ -138,6 +141,11 @@ hr {
 .setForm div {
     align-self: center;
     margin: 0px 10px;
+}
+
+.tw, .tr, .trpe, .rt {
+    font-size: 1.25rem;
+    color: var(--text-gray-two);
 }
 
 .setForm .tw {

@@ -3,10 +3,11 @@ from flask_debugtoolbar import DebugToolbarExtension
 from secret_keys import app_secret_key
 from models import db, connect_db, User, Template, TemplateExercise, Workout, WorkoutExercise, Set
 from sqlalchemy.exc import IntegrityError
-from forms import SignupForm, LoginForm, TemplateForm, WorkoutForm, DateForm
+from forms import SignupForm, LoginForm, TemplateForm, WorkoutForm, ProgressForm, UserInfoForm
 from datetime import date, datetime
 from calendar import monthrange
 from urllib.parse import parse_qsl
+import plotly.express as px
 import requests
 import json
 import pdb
@@ -14,13 +15,15 @@ import pdb
 USER_KEY = 'curr_user'
 WGER = 'https://wger.de/api/v2'
 
-app = Flask(__name__)
+app = Flask(
+    __name__, static_url_path='/static')
 
 app.config['SECRET_KEY'] = app_secret_key
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///CapstoneOne'
-app.config['SQLALECHEMY_ECHO'] = False
+app.config['SQLALECHEMY_ECHO'] = True
 
 toolbar = DebugToolbarExtension(app)
+
 
 connect_db(app)
 
@@ -51,9 +54,12 @@ def do_logout():
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     form = SignupForm()
+
+    if g.user:
+        return redirect('/')
+
+    # pdb.set_trace()
     if form.validate_on_submit():
-        if g.user:
-            do_logout()
         try:
             user = User.signup(username=form.username.data,
                                password=form.password.data,
@@ -77,10 +83,11 @@ def signup():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
-    if form.validate_on_submit():
-        if g.user:
-            do_logout()
 
+    if g.user:
+        return redirect('/')
+
+    if form.validate_on_submit():
         user = User.authenticate(form.username.data, form.password.data)
 
         if user:
@@ -130,7 +137,7 @@ def edit_template(temp_id):
     template = TemplateExercise()
     muscle_groups = [(res['id'], res['name_en'] if res['name_en']
                       else res['name']) for res in results['results']]
-    form.muscle_groups.choices = muscle_groups
+    form.muscle_groups.choices = sorted(muscle_groups, key=lambda mg: mg[1])
     template = Template.query.get_or_404(temp_id)
     # pdb.set_trace()
     if form.validate_on_submit():
@@ -159,7 +166,7 @@ def create_template():
     results = requests.get(f'{WGER}/muscle').json()
     muscle_groups = [(res['id'], res['name_en'] if res['name_en']
                       else res['name']) for res in results['results']]
-    form.muscle_groups.choices = muscle_groups
+    form.muscle_groups.choices = sorted(muscle_groups, key=lambda mg: mg[1])
     if form.validate_on_submit():
         # get values from request.form since some inputs are generated
         # dynamically in HTML
@@ -203,7 +210,8 @@ def create_workout():
     muscle_groups = [(res['id'], res['name_en'] if res['name_en']
                       else res['name']) for res in results['results']]
     muscle_groups = sorted(muscle_groups)
-    exercise_form.muscle_groups.choices = muscle_groups
+    exercise_form.muscle_groups.choices = sorted(
+        muscle_groups, key=lambda mg: mg[1])
     if form.validate_on_submit():
         # pdb.set_trace()
         workout = Workout(user_id=g.user.id,
@@ -280,41 +288,84 @@ def delete_workout(workout_id):
     return redirect('/')
 
 
-@app.route('/completed')
-def get_completed_workouts():
+######################################################################################
+# Other Routes
+
+def create_plot():
     params = parse_qsl(request.url)
+
+    if len(params) < 3:
+        month = datetime.today().month
+        year = datetime.today().year
+        exercise = WorkoutExercise.query.filter(
+            Workout.user_id == g.user.id).distinct(
+            WorkoutExercise.exercise_id).first().exercise_id
+    else:
+        month = int(params[0][1])
+        year = int(params[1][1])
+        exercise = int(params[2][1])
+
     # pdb.set_trace()
-    month = int(params[0][1])
-    year = int(params[1][1])
+
     range = monthrange(year, month)
     start_date = datetime(year, month, 1)
     end_date = datetime(year, month, range[1])
 
-    query = Workout.query.filter(Workout.user_id == g.user.id).filter(
-        Workout.completed >= start_date).filter(Workout.completed <= end_date)
-    workouts = query.all()
+    query = WorkoutExercise.query.join(Workout).filter(
+        Workout.user_id == g.user.id).filter(
+        Workout.completed != None).filter(
+        Workout.completed >= start_date).filter(
+        Workout.completed <= end_date).filter(
+        WorkoutExercise.exercise_id == exercise)
+    exercises = query.all()
     # pdb.set_trace()
-    results = {'workouts': []}
-    for w_index, workout in enumerate(workouts):
-        results['workouts'].append({'completed': workout.completed.strftime('%m/%d/%Y'),
-                                    'name': workout.name,
-                                    'exercises': []})
-        for ex_index, exercise in enumerate(workout.exercises):
-            exercises = [{'name': exercise.exercise_name,
-                          'sets': []}]
-            results['workouts'][w_index]['exercises'] = exercises
+
+    if exercises:
+        sets = []
+        for exercise in exercises:
             for set in exercise.sets:
-                results['workouts'][w_index]['exercises'][ex_index]['sets'].append({'tw': set.target_weight,
-                                                                                    'cw': set.completed_weight,
-                                                                                    'tr': set.target_reps,
-                                                                                    'cr': set.completed_reps,
-                                                                                    'trpe': set.target_RPE,
-                                                                                    'crpe': set.completed_RPE,
-                                                                                    'resttime': set.resttime})
-    return json.dumps(results)
+                sets.append(set)
+        # pdb.set_trace()
+        x = [set.exercise.workout.completed.strftime(
+            '%m/%d/%Y') for set in sets]
+        y = [set.completed_weight for set in sets]
+        # pdb.set_trace()
+        plot = px.scatter(x=x, y=y, labels={'x': 'Date',
+                                            'y': f'{g.user.unit.abbr}s'},
+                          title=set.exercise.exercise_name)
+    else:
+        plot = None
+    return plot
 
 
 @app.route('/progress')
 def get_progress():
-    form = DateForm()
-    return render_template('progress.html', form=form, datetime=datetime)
+    form = ProgressForm()
+    exercises = WorkoutExercise.query.filter(
+        Workout.user_id == g.user.id).distinct(WorkoutExercise.exercise_id).all()
+    choices = [(exercise.exercise_id, exercise.exercise_name)
+               for exercise in exercises]
+    choices = sorted(choices, key=lambda ex: ex[1])
+    form.exercise.choices = choices
+    plot = create_plot()
+    plot.update_traces(marker={'size': 15})
+    if plot:
+        plot.write_html('./templates/plot.html')
+    return render_template('progress.html', form=form, datetime=datetime, plot=plot)
+
+
+@app.route('/profile', methods=['GET', 'POST'])
+def update_profile():
+    form = UserInfoForm()
+    # pdb.set_trace()
+    if form.validate_on_submit():
+        user = User.query.get(g.user.id)
+        user.first_name = form.first_name.data if form.first_name.data else user.first_name
+        user.last_name = form.last_name.data if form.last_name.data else user.last_name
+        user.birthday = form.birthday.data if form.birthday.data else user.birthday
+        user.height = form.height.data if form.height.data else user.height
+        user.weight = form.weight.data if form.weight.data else user.weight
+        user.preferred_units = form.preferred_unit.data
+        db.session.commit()
+        return redirect('/profile')
+    return render_template('/profile.html', form=form)

@@ -3,14 +3,47 @@
 }
 
 #header {
+    margin-top: 1rem;
+}
+
+#header div {
+    margin-bottom: 10px;
+}
+
+#header form {
     display: flex;
     justify-content: center;
     align-items: flex-end;
+    flex-wrap: wrap;
     gap: 5px;
+    position: relative;
+}
+#header button {
+    position: relative;
+    bottom: 10px;
+}
+
+input[name='year'] {
+    width: 100px;
+    background-color: var(--bs-primary-bg-subtle);
+}
+
+#month {
+    width: 150px;
+    background-color: var(--bs-primary-bg-subtle);
+}
+
+#exercise {
+    width: 150px;
+    background-color: var(--bs-primary-bg-subtle);
 }
 
 h3 {
     text-align: center;
+}
+
+.bg-icon {
+    visibility: hidden;
 }
 
 

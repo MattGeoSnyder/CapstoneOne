@@ -1,3 +1,7 @@
+h3 {
+    font-size: 40px;
+}
+
 form {
     height: fit-content;
 }
@@ -7,6 +11,8 @@ form {
     overflow-y: none;
     height: 85vh;
     width: 35%;
+
+    
 }
 
 @media screen and (max-width: 1440px){
@@ -23,19 +29,31 @@ form {
 
 #login-here {
     height: 35px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+
+    font-size: 24px;
+    color: var(--text-gray-two);
+    margin-bottom: 2rem;
 }
 
 #login-here a {
     color: var(--my-red);
-    padding-left: 3px;
 }
 
 #req-info {
     right: 0%;
     transition: right .3s ease-in;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#req-info div {
+    width: 100%;
+}
+
+#next {
+    align-self: flex-end;
 }
 
 #req-info.slide {
@@ -50,6 +68,19 @@ form {
 #add-info {
     left: 100%;
     transition: left .3s ease-in;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#more-info {
+    font-size: 24px;
+    color: var(--text-gray-two);
+}
+
+#add-info div {
+    width: 100%;
 }
 
 #add-info.slide{
@@ -62,7 +93,7 @@ input {
 }
 
 select {
-    background-color: var(--my-gray) !important;
+    background-color: var(--bs-primary-bg-subtle) !important;
 }
 
 #button-bar {
@@ -71,8 +102,21 @@ select {
 
 #button-bar button {
     width: 110px;
+    height: 38px;
 }
 
+#req-info, #add-info {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+
+.err-desc {
+    font-size: 12px;
+    color: var(--my-red);
+    position: relative;
+    top: -20px;
+}
 
 @media screen and (max-width: 375px) {
     #login-here {

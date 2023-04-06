@@ -8,12 +8,12 @@
 <div id="main-content" class="container-fluid">
   <div id="content-wrapper" class="container-fluid">
     <div id="banner">
-      <h3>Templates</h3>
+      <h3>Routines</h3>
       <a id="add-template" href="/templates/new">
-        Create Template<i class="fa-solid fa-plus fa-2x"></i>
+        <i class="fa-solid fa-plus fa-xl"></i> Create Routine
       </a>
       <p>
-        Templates are a way for you to create regularly recurring workouts more quickly. 
+        Routines are a way for you to create regularly recurring workouts more quickly. 
         In a template you can select exercises and they will be saved here for you to create
         workouts from.
       </p>
@@ -24,10 +24,10 @@
           <div class="template">
             <div class="template-info">
               <a class="template-link" href="/templates/{{template.id}}"><h3>{{template.name}}</h3></a>
-              <h4>Exercises <i class="fa-solid fa-caret-down"></i></h4>
+              <span class="exercise-dropdown">Exercises <i class="fa-solid fa-caret-down"></i></span>
               <div class="exercise-wrapper">
                 {% for exercise in template.exercises %}
-                  {{exercise.exercise_name}} <br>
+                  <span class="exercise-name">{{exercise.exercise_name}}</span> <br>
                 {% endfor %}  
               </div>
             </div>

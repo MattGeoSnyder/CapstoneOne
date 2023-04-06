@@ -1,3 +1,9 @@
+:root {
+    --text-gray: #9b9b9b;
+    --text-gray-two: #515151;
+}
+
+
 a {
     text-decoration: none;
 }
@@ -34,10 +40,24 @@ button:hover a {
     height: fit-content;
 
     position: relative;
+
+    margin-bottom: 1rem;
 }
 
 #banner i {
-    padding-left: 10px;
+    padding-right: 10px;
+}
+
+
+#banner a {
+    font-size: 20px;
+}
+
+p {
+    line-height: 1.75rem;
+    margin: 0 15px;
+    color: var(--text-gray-two);
+    letter-spacing: .1rem;
 }
 
 #add-template {
@@ -76,11 +96,22 @@ button:hover a {
     color: var(--my-black);
 }
 
+.exercise-dropdown {
+    font-size: 24px;
+}
+
 .exercise-wrapper {
     max-height: 0px;
     overflow-y: hidden;
 
     transition: max-height 0.3s ease;
+    margin: 0 5%;
+}
+
+.exercise-name {
+    font-size: 18px;
+    letter-spacing: 0.075rem;
+    font-weight: 700;
 }
 
 @media screen and (max-width: 768px) {

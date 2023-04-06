@@ -13,57 +13,57 @@
     <div id="upcoming-workouts">
       {% if upcoming %}
         {% for workout in upcoming %}
-          <div class="workout">
-            <div class="workout-header">
-              <span>
-                {{ workout.scheduled.strftime('%m/%d/%Y')}}
-              </span>
-              <h3><a href="/workouts/{{workout.id}}">{{workout.name}}</a></h3> 
-              <form method="POST" action="/workouts/delete/{{workout.id}}" class="del">
-                <a onclick="this.parentNode.submit()">
-                  <i class="fa-solid fa-x fa-xl" ></i>
-                </a>
-              </form> 
-            </div>
-            <h4>Exercises <i href="#" class="fa-solid fa-caret-down"></i></h4>
-            <div class="exercises">
-              {% for exercise in workout.exercises %}
-                  <span>{{exercise.exercise_name}} <i class="fa-solid fa-caret-down"></i></span>
-                  <div class="sets">
-                    {% for ex_set in exercise.sets %}
-                      {{set.render_set(loop.index, ex_set)}}
-                    {% endfor %}
-                  </div>
-              {% endfor %}
-            </div>
+        <div class="workout">
+          <div class="workout-header">
+            <span class="date">
+              {{ workout.scheduled.strftime('%m/%d/%Y')}}
+            </span>
+            <span class="title"><a href="/workouts/{{workout.id}}">{{workout.name}}</a></span>
+            <form method="POST" action="/workouts/delete/{{workout.id}}" class="del">
+              <a onclick="this.parentNode.submit()">
+                <i class="fa-solid fa-x fa-xl" ></i>
+              </a>
+            </form> 
           </div>
+          <span class="exercise-dropdown">Exercises <i href="#" class="fa-solid fa-caret-down"></i></span>
+          <div class="exercises">
+            {% for exercise in workout.exercises %}
+                <span class="exercise-name">{{exercise.exercise_name}} <i class="fa-solid fa-caret-down"></i></span>
+                <div class="sets">
+                  {% for ex_set in exercise.sets %}
+                    {{set.render_set(loop.index, ex_set)}}
+                  {% endfor %}
+                </div>
+            {% endfor %}
+          </div>
+        </div>
+    </div>
         {% endfor %}
       {% else %}
           No items to display
       {% endif %}
-    </div>
     <h3 class="text-center">Completed Workouts</h3>
     <hr>
-    <div id="completed-wrapper" class="container-fluid">
-      <div id="completed-workouts" class="container-fluid">
+    <div id="completed-wrapper">
+      <div id="completed-workouts">
         {% if completed %}
           {% for workout in completed %}
             <div class="workout">
               <div class="workout-header">
-                <span>
-                  {{ workout.scheduled.strftime('%m/%d/%Y')}}
+                <span class="date">
+                  {{ workout.completed.strftime('%m/%d/%Y')}}
                 </span>
-                <h3><a href="/workouts/{{workout.id}}">{{workout.name}}</a></h3>
+                <span class="title">{{workout.name}}</span>
                 <form method="POST" action="/workouts/delete/{{workout.id}}" class="del">
                   <a onclick="this.parentNode.submit()">
                     <i class="fa-solid fa-x fa-xl" ></i>
                   </a>
                 </form> 
               </div>
-              <h4>Exercises <i href="#" class="fa-solid fa-caret-down"></i></h4>
+              <span class="exercise-dropdown">Exercises <i href="#" class="fa-solid fa-caret-down"></i></span>
               <div class="exercises">
                 {% for exercise in workout.exercises %}
-                    <span>{{exercise.exercise_name}} <i class="fa-solid fa-caret-down"></i></span>
+                    <span class="exercise-name">{{exercise.exercise_name}} <i class="fa-solid fa-caret-down"></i></span>
                     <div class="sets">
                       {% for ex_set in exercise.sets %}
                         {{set.render_set(loop.index, ex_set)}}
@@ -71,7 +71,7 @@
                     </div>
                 {% endfor %}
               </div>
-              </div>
+            </div>
           {% endfor %}
         {% else %}
           No items to display
