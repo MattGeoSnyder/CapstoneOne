@@ -5,6 +5,11 @@ span {
 
 }
 
+#login-error {
+    color: var(--my-red);
+    font-size: 14px;
+}
+
 span a {
     color: var(--my-red);
 }
@@ -34,10 +39,17 @@ form div {
 #input-container {
     width: 100%;
     margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 #input-container input {
     margin-bottom: 1rem;
+}
+
+#input-container div {
+    width: 100%;
 }
 
 @media screen and (max-width: 768px) {

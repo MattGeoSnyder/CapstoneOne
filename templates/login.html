@@ -10,9 +10,16 @@
     <form action="/login" method='POST'>
         <span id="sign-up">Don't have an account? Sign up <a href="/signup">here!</a></span>
         <div id="input-container">
+            <span id="login-error">
+                {% for err in form.form_errors %}
+                    {{err}}
+                {% endfor %}
+            </span>
             {{form.hidden_tag()}}
             {% for field in form if field.widget.input_type != 'hidden'%}
-            {{field.label}} {{field(class='form-control')}}
+                <div>
+                    {{field.label}} {{field(class='form-control')}}
+                </div>
             {% endfor %}
         </div>
         <button class="btn mx-auto d-block">Login</button>

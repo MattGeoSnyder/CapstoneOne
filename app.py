@@ -74,7 +74,6 @@ def signup():
             do_login(user)
             return redirect('/')
         except IntegrityError as e:
-            pdb.set_trace()
             flash('Username already exists', 'err')
             return render_template('/signup.html', form=form)
     return render_template('signup.html', form=form)
@@ -93,8 +92,10 @@ def login():
         if user:
             do_login(user)
             return redirect('/')
-
-        # flash message here
+        else:
+            form.form_errors.append(
+                'Username and Password do not match. Please try again.')
+            render_template('login.html', form=form)
 
     return render_template('login.html', form=form)
 
