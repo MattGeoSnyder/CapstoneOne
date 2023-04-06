@@ -23,7 +23,6 @@ let y = [5, 25, 45, 65, 85];
 coords = [];
 for (let y_0 of y){
     for (let x_0 of x) {
-        console.log(x_0, y_0);
         coords.push({x_0,y_0});
     }
 }
