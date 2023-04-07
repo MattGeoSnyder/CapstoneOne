@@ -46,4 +46,210 @@ h3 {
     visibility: hidden;
 }
 
+#completed-wrapper {
+    min-height: 40%;
+}
 
+#completed-workouts {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    min-height: 40%;
+    height: fit-content;
+}
+
+.exercises {
+    max-height: 0px;
+    overflow-y: hidden;
+
+    transition: max-height 0.3s ease;
+}
+
+.workout {
+    width: 35%;
+    min-height: 150px;
+    height: fit-content;
+
+    border: 1px solid var(--my-gray);
+    border-radius: 5px;
+    margin: 0px auto 1rem auto;
+    box-shadow: 1px 2px var(--my-gray);
+
+    padding: 20px;
+
+    background-color: var(--my-white);
+    color: var(--my-black);
+    
+}
+
+.workout-header {
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+
+.workout-header .date {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    font-size: 20px;
+    letter-spacing: 5%;
+    color: var(--text-gray);
+}
+
+.workout-header .title {
+    font-size: 36px;
+    letter-spacing: 5%;
+    font-weight: 700;
+}
+
+.workout-header a {
+    color: var(--my-red);
+    text-decoration: none;
+}
+
+.exercise-dropdown {
+    font-size: 24px;
+    letter-spacing: 5%;
+}
+
+.exercises {
+    margin: 0 5%;
+}
+
+.exercise-name {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 10%;
+}
+
+.sets {
+    max-height: 0px;
+    overflow-y: hidden;
+
+
+    transition: max-height 0.3s ease;
+}
+
+.set {
+    margin: 0 5%;
+    font-size: 1.25rem;
+}
+
+.set-header {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 5%;
+}
+
+.set-header .set-index {
+    font-weight: 700;
+}
+
+.set-header .desc {
+    color: var(--text-gray);
+}
+
+.set-info {
+    margin: 0 10%;
+    display: flex;
+    flex-direction: column;
+
+    color: var(--text-gray-two);
+    font-size: 1.25rem;
+}
+
+.weight, .reps, .rpe, .resttime {
+    display: flex;
+    justify-content: space-between;
+}
+
+.workout-header h3 a:hover {
+    color: var(--my-black);
+}
+
+i {
+    color: var(--my-red);
+}
+
+.del {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
+.del i {
+    color: var(--my-black);
+}
+
+.del i:hover {
+    color: var(--my-red);
+}
+
+.del button {
+    border: none;
+}
+
+hr {
+    width: 50%;
+    margin: 10px auto;
+}
+
+@media screen and (max-width: 1024px) {
+    hr{
+        width: 65%;
+    }
+    .workout {
+        width: 50%;
+    }
+}
+
+
+@media screen and (max-width: 768px) {
+    hr {
+        width: 95%;
+    }
+    .workout {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 425px) {
+    .title {
+        font-size: 28px;
+        position: relative;
+        top: 25px;
+        margin-bottom: 20px;
+    }
+    .set {
+        margin: 0;
+    }
+    .exercises {
+        margin: 0;
+    }
+}
+
+
+@media screen and (max-width: 375px) {
+    .set {
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: center;
+    }
+    .set span {
+        align-self: start;
+    }
+    .set div {
+        display: block;
+        width: 100%;
+        margin: 5px 0px;
+    }
+}
+
+@media screen and (max-width: 325px) {
+    .workout-header span {
+        font-size: 0.75rem;
+    }
+}

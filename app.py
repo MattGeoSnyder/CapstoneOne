@@ -336,7 +336,13 @@ def create_plot():
                           title=set.exercise.exercise_name)
     else:
         plot = None
-    return plot
+
+    workouts = Workout.query.filter(Workout.user_id == g.user.id).filter(
+        Workout.completed != None).filter(
+        Workout.completed >= start_date).filter(
+        Workout.completed <= end_date).order_by(Workout.completed.desc()).all()
+    return {'plot': plot,
+            'workouts': workouts}
 
 
 @app.route('/progress')
@@ -348,11 +354,13 @@ def get_progress():
                for exercise in exercises]
     choices = sorted(choices, key=lambda ex: ex[1])
     form.exercise.choices = choices
-    plot = create_plot()
+    data = create_plot()
+    plot = data['plot']
+    workouts = data['workouts']
     plot.update_traces(marker={'size': 15})
     if plot:
         plot.write_html('./templates/plot.html')
-    return render_template('progress.html', form=form, datetime=datetime, plot=plot)
+    return render_template('progress.html', form=form, datetime=datetime, plot=plot, completed=workouts)
 
 
 @app.route('/profile', methods=['GET', 'POST'])

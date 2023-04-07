@@ -1,49 +1,40 @@
-function createWorkoutCard (workoutInfo) {
-    let workout = document.createElement('div');
-    workout.classList.add('workout');
+window.addEventListener('DOMContentLoaded', function() {
+    let icons = document.querySelectorAll('#completed-workouts i');
 
-    let workoutHeader = document.createElement('div');
-    workoutHeader.classList.add('workout-header');
+    for (let icon of icons) {
+        icon.dataset.down = false;
+        icon.addEventListener('click', dropdownHandler)
+    }
+});
 
-    let date = document.createElement('span');
-    date.innerText = workoutInfo.completed;
+function expand(icon) {
+    icon.dataset.down = true;
+    icon.classList.remove('fa-caret-down');
+    icon.classList.add('fa-caret-up');
+    let workoutContainer = icon.parentElement;
+    let exercises = workoutContainer.nextElementSibling;
 
-    let form = createElement('form');
-    form.method = 'POST';
-    form.action = `/workouts/delete${workoutInfo.id}`;
-    form.classList.add('del');
-    
-    let a = document.createElement('a');
-    a.onclick(this.parentNode.submit());
-    a.innerHTML = '<i class="fa-solid fa-x fa-xl"></i>';
-    form.appendChild(a);
-
-    workoutHeader.appendChild(date);
-    workoutHeader.appendChild(form);
-    
-    workout.appendChild(workoutHeader);
-
-    let h4 = document.createElement('h4');
-    h4.innerHTML = 'Exercises <i class="fa-solid fa-caret-down"></i>';
-
-    workout.appendChild(workoutHeader);
-
-    exercises = document.createElement
+    exercises.style.maxHeight = '1000px';
 }
 
-function createSet(setInfo) {
+function shrink(icon) {
+    icon.dataset.down = false;
+    icon.classList.remove('fa-caret-up');
+    icon.classList.add('fa-caret-down');
+    let workoutContainer = icon.parentElement;
+    let exercises = workoutContainer.nextElementSibling;
+
+    exercises.style.maxHeight = '0px';
 
 }
 
-let form = document.querySelector("#header form");
-form.addEventListener('submit', async function(e) {
-    e.preventDefault();
-    let monthInput = document.querySelector("input[name='month']");
-    let yearInput = document.querySelector("input[name='year']");
-
-    month = monthInput.value;
-    year = yearInput.value;
-
-    let res = await axios.get(`/completed?month=${month}&year=${year}`);
-
-})
+function dropdownHandler(e) {
+    let icon = e.target
+    let sibling = e.target.parentElement.nextElementSibling;
+    if (icon.dataset.down === 'true') {
+        shrink(icon);
+    } else {
+        expand(icon);
+    }
+    scrollTo(sibling);
+}

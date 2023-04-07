@@ -4,6 +4,8 @@
 <link rel="stylesheet" href="./static/style/progress.css">
 {% endblock %}
 
+{% import 'set.html' as set %}
+
 {% block content %}
 {% if form.exercise.choices %}
   <div id="content-wrapper">
@@ -27,11 +29,51 @@
     {% else %}
       <h3>No Information Found</h3>  
     {% endif %}
+
+<h3 class="text-center">Completed Workouts</h3>
+<hr>
+<div id="completed-wrapper">
+  <div id="completed-workouts">
+    {% if completed %}
+      {% for workout in completed %}
+        <div class="workout">
+          <div class="workout-header">
+            <span class="date">
+              {{ workout.completed.strftime('%m/%d/%Y')}}
+            </span>
+            <span class="title">{{workout.name}}</span>
+            <form method="POST" action="/workouts/delete/{{workout.id}}" class="del">
+              <a onclick="this.parentNode.submit()">
+                <i class="fa-solid fa-x fa-xl" ></i>
+              </a>
+            </form> 
+          </div>
+          <span class="exercise-dropdown">Exercises <i href="#" class="fa-solid fa-caret-down"></i></span>
+          <div class="exercises">
+            {% for exercise in workout.exercises %}
+                <span class="exercise-name">{{exercise.exercise_name}} <i class="fa-solid fa-caret-down"></i></span>
+                <div class="sets">
+                  {% for ex_set in exercise.sets %}
+                    {{set.render_set(loop.index, ex_set)}}
+                  {% endfor %}
+                </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      No items to display
+    {% endif %}    
+  </div>
+</div>
+
 {% else %}
   <h3>You haven't completed any workouts yet. Get a workout in and come back later!</h3>
 {% endif %}
 
-  
+{% block script %}
+<script src="/static/script/progress.js"></script>
+{% endblock %}
   
 </div>
 {% endblock %}
