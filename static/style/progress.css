@@ -196,6 +196,11 @@ hr {
     margin: 10px auto;
 }
 
+.come-back {
+    margin-top: 2rem;
+    color: var(--text-gray-two);
+}
+
 @media screen and (max-width: 1024px) {
     hr{
         width: 65%;

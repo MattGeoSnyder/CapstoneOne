@@ -20,7 +20,7 @@ app = Flask(
 
 app.config['SECRET_KEY'] = app_secret_key
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///CapstoneOne'
-app.config['SQLALECHEMY_ECHO'] = True
+app.config['SQLALECHEMY_ECHO'] = False
 
 toolbar = DebugToolbarExtension(app)
 
@@ -299,8 +299,10 @@ def create_plot():
         month = datetime.today().month
         year = datetime.today().year
         exercise = WorkoutExercise.query.filter(
-            Workout.user_id == g.user.id).distinct(
-            WorkoutExercise.exercise_id).first().exercise_id
+            Workout.user_id == g.user.id).order_by(
+            WorkoutExercise.exercise_name).first()
+        if exercise:
+            exercise = exercise.exercise_id
     else:
         month = int(params[0][1])
         year = int(params[1][1])
@@ -357,8 +359,8 @@ def get_progress():
     data = create_plot()
     plot = data['plot']
     workouts = data['workouts']
-    plot.update_traces(marker={'size': 15})
     if plot:
+        plot.update_traces(marker={'size': 15})
         plot.write_html('./templates/plot.html')
     return render_template('progress.html', form=form, datetime=datetime, plot=plot, completed=workouts)
 
