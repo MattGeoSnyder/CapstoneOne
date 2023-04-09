@@ -20,7 +20,7 @@ app = Flask(
     __name__, static_url_path='/static')
 
 app.config['SECRET_KEY'] = "secret_key"
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql:///CapstoneOne"
 app.config['SQLALECHEMY_ECHO'] = False
 
 toolbar = DebugToolbarExtension(app)
@@ -59,7 +59,6 @@ def signup():
     if g.user:
         return redirect('/')
 
-    # pdb.set_trace()
     if form.validate_on_submit():
         try:
             user = User.signup(username=form.username.data,
@@ -117,7 +116,6 @@ def home():
         Workout.completed == None).order_by(Workout.scheduled).all()
     completed = Workout.query.filter(Workout.user_id == g.user.id).filter(Workout.completed != None).order_by(
         Workout.completed.desc()).limit(10).all()
-    # pdb.set_trace()
     return render_template('home.html', upcoming=upcoming, completed=completed)
 
 
@@ -141,7 +139,6 @@ def edit_template(temp_id):
                       else res['name']) for res in results['results']]
     form.muscle_groups.choices = sorted(muscle_groups, key=lambda mg: mg[1])
     template = Template.query.get_or_404(temp_id)
-    # pdb.set_trace()
     if form.validate_on_submit():
         for ex in template.exercises:
             db.session.delete(ex)
@@ -215,7 +212,6 @@ def create_workout():
     exercise_form.muscle_groups.choices = sorted(
         muscle_groups, key=lambda mg: mg[1])
     if form.validate_on_submit():
-        # pdb.set_trace()
         workout = Workout(user_id=g.user.id,
                           scheduled=form.scheduled.data, name=form.name.data)
         db.session.add(workout)
@@ -250,7 +246,6 @@ def return_templates():
 @app.route('/workouts/new/templates/<int:temp_id>', methods=['GET', 'POST'])
 def create_from_template(temp_id):
     template = Template.query.get_or_404(temp_id)
-    # pdb.set_trace()
     form = WorkoutForm()
     if form.validate_on_submit():
         return redirect('/')
@@ -267,7 +262,6 @@ def start_workout(workout_id):
         exercises = workout.exercises
         res_data = request.form.getlist('ex-info')
         for ex, ex_data in zip(exercises, res_data):
-            # pdb.set_trace()
             data = json.loads(ex_data)
             for set, set_data in zip(ex.sets, data['sets']):
                 set.target_weight = set_data['tw']
@@ -307,8 +301,6 @@ def create_plot():
         year = int(params[1][1])
         exercise = int(params[2][1])
 
-    # pdb.set_trace()
-
     range = monthrange(year, month)
     start_date = datetime(year, month, 1)
     end_date = datetime(year, month, range[1])
@@ -320,18 +312,16 @@ def create_plot():
         Workout.completed <= end_date).filter(
         WorkoutExercise.exercise_id == exercise)
     exercises = query.all()
-    # pdb.set_trace()
 
     if exercises:
         sets = []
         for exercise in exercises:
             for set in exercise.sets:
                 sets.append(set)
-        # pdb.set_trace()
+
         x = [set.exercise.workout.completed.strftime(
             '%m/%d/%Y') for set in sets]
         y = [set.completed_weight for set in sets]
-        # pdb.set_trace()
         plot = px.scatter(x=x, y=y, labels={'x': 'Date',
                                             'y': f'{g.user.unit.abbr}s'},
                           title=set.exercise.exercise_name)
@@ -367,7 +357,6 @@ def get_progress():
 @app.route('/profile', methods=['GET', 'POST'])
 def update_profile():
     form = UserInfoForm()
-    # pdb.set_trace()
     if form.validate_on_submit():
         user = User.query.get(g.user.id)
         user.first_name = form.first_name.data if form.first_name.data else user.first_name

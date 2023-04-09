@@ -125,7 +125,6 @@ function activateTimer() {
         return;
     }
 
-    showTimer();
     time.setAttribute('active', 'true');
     let rtMin = curr.querySelector('.rt input[name="rt-min"]').value;
     let rtSec = curr.querySelector('.rt input[name="rt-sec"]').value;
@@ -136,6 +135,11 @@ function activateTimer() {
     console.log(rt);
     rtMin = Math.floor(rt/60);
     rtSec = rt % 60;
+    
+    if (rt) {
+        showTimer();
+    }
+
     if (rtSec < 10) {
         time.innerText = `${rtMin}:0${rtSec}`;
     }

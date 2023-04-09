@@ -30,8 +30,8 @@
       <div class="rt">
         <label for="rt-{{index}}">Rest Time</label>
         <div id="min-sec-wrapper">
-          <input type="number" class="form-control" name="rt-min" id="rt-min-{{index}}" value={{set.resttime // 60}}>
-          <input type="number" class="form-control" name="rt-sec" id="rt-sec-{{index}}" value={{set.resttime % 60}}>
+          <input type="number" class="form-control" name="rt-min" id="rt-min-{{index}}" {% if set.resttime %} value={{set.resttime // 60}} {% endif %}>
+          <input type="number" class="form-control" name="rt-sec" id="rt-sec-{{index}}" {% if set.resttime %} value={{set.resttime % 60}} {% endif %}>
         </div>
           
       </div>
