@@ -20,7 +20,8 @@ app = Flask(
     __name__, static_url_path='/static')
 
 app.config['SECRET_KEY'] = "secret"
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
+    'DATABASE_URL').replace("postgres", "postgresql")
 app.config['SQLALECHEMY_ECHO'] = False
 
 toolbar = DebugToolbarExtension(app)
