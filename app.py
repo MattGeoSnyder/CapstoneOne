@@ -1,6 +1,6 @@
 from flask import Flask, g, render_template, redirect, session, flash, request
 from flask_debugtoolbar import DebugToolbarExtension
-from secret_keys import app_secret_key
+# from secret_keys import app_secret_key
 from models import db, connect_db, User, Template, TemplateExercise, Workout, WorkoutExercise, Set
 from sqlalchemy.exc import IntegrityError
 from forms import SignupForm, LoginForm, TemplateForm, WorkoutForm, ProgressForm, UserInfoForm
@@ -18,7 +18,7 @@ WGER = 'https://wger.de/api/v2'
 app = Flask(
     __name__, static_url_path='/static')
 
-app.config['SECRET_KEY'] = app_secret_key
+app.config['SECRET_KEY'] = "secret"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///CapstoneOne'
 app.config['SQLALECHEMY_ECHO'] = False
 
