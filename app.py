@@ -1,6 +1,6 @@
 from flask import Flask, g, render_template, redirect, session, flash, request
 from flask_debugtoolbar import DebugToolbarExtension
-from secret_keys import app_secret_key
+# from secret_keys import app_secret_key
 from models import db, connect_db, User, Template, TemplateExercise, Workout, WorkoutExercise, Set
 from sqlalchemy.exc import IntegrityError
 from forms import SignupForm, LoginForm, TemplateForm, WorkoutForm, ProgressForm, UserInfoForm
