@@ -31,6 +31,6 @@ This project was built using [Flask v2.2.2] and uses the following technologies:
 
 ## Models
 
-<embed src="./preliminary/SchemaDiagram.pdf" type="application/pdf">
+<embed src="./static/resources/SchemaDiagram.pdf" type="application/pdf">
 
 https://wger.de/api/v2/
