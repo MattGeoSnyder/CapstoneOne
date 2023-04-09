@@ -2,7 +2,7 @@
 
 I created a free fitness web-app designed to make logging your workouts quick and easy.
 
-### You can find my app at: fitter.herokuapp.com
+### You can find my app at: [Fitter](fitter.herokuapp.com)
 
 ## Motivation
 
@@ -31,6 +31,6 @@ This project was built using [Flask v2.2.2] and uses the following technologies:
 
 ## Models
 
-![Models](/preliminary/SchemaDiagram.pdf)
+<embed src="./preliminary/SchemaDiagram.pdf" type="application/pdf">
 
 https://wger.de/api/v2/
