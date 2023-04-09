@@ -11,6 +11,7 @@ import plotly.express as px
 import requests
 import json
 import pdb
+import os
 
 USER_KEY = 'curr_user'
 WGER = 'https://wger.de/api/v2'
@@ -19,7 +20,7 @@ app = Flask(
     __name__, static_url_path='/static')
 
 app.config['SECRET_KEY'] = "secret"
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///CapstoneOne'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 app.config['SQLALECHEMY_ECHO'] = False
 
 toolbar = DebugToolbarExtension(app)
