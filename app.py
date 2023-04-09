@@ -17,7 +17,7 @@ WGER = 'https://wger.de/api/v2'
 
 app = Flask(
     __name__, static_url_path='/static')
-
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
     'DATABASE_URL').replace('postgres', 'postgresql')
 app.config['SQLALECHEMY_ECHO'] = True
