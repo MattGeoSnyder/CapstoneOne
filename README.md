@@ -2,7 +2,7 @@
 
 I created a free fitness web-app designed to make logging your workouts quick and easy.
 
-You can find my app at: [fitter.herokuapp.com](fitter.herokuapp.com)
+You can find my app at: [fitter.herokuapp.com](https://fitter.herokuapp.com)
 
 ## Motivation
 
