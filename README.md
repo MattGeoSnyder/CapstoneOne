@@ -9,7 +9,7 @@ You can find my app at: [fitter.herokuapp.com](https://fitter.herokuapp.com)
 I wanted to create a fitness app that I would want to use. There are a couple of pain points that I've experienced using fitness apps:
 
 1. It takes too long to log your workout information.
-2. It's often not easy to change your workout information.
+2. It's often not easy to change your workout information once entered.
 3. They aren't always designed to go through your workout with you.
 
 ## User Flow
