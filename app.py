@@ -18,8 +18,7 @@ WGER = 'https://wger.de/api/v2'
 app = Flask(
     __name__, static_url_path='/static')
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "secret1234")
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
-    'DATABASE_URL').replace('postgres', 'postgresql')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("LOCAL_URI") if os.environ.get("DB_DEV") else os.environ.get("NEON_URI")
 app.config['SQLALECHEMY_ECHO'] = True
 
 toolbar = DebugToolbarExtension(app)
